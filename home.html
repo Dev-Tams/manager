@@ -735,8 +735,14 @@
             display: flex;
             gap: 6px;
             overflow-x: auto;
-            padding-bottom: 2px;
+            padding: 10px 18px;
             justify-content: center;
+            background: rgba(10, 21, 16, 0.94);
+            backdrop-filter: blur(14px);
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .dash-tabs::-webkit-scrollbar {
@@ -991,6 +997,17 @@
             box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
         }
 
+        .stat-card.clickable {
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.2s;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .stat-card.clickable:hover {
+            transform: translateY(-1px);
+            border-color: rgba(0, 132, 61, 0.2);
+        }
+
         .stat-card.dark {
             background: var(--dark);
             cursor: pointer;
@@ -1087,6 +1104,46 @@
             padding-bottom: 14px;
         }
 
+        .budget-ledger-grid,
+        .overview-metric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .ledger-item,
+        .overview-metric {
+            border-radius: 13px;
+            background: #FAFAFA;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 12px;
+        }
+
+        .ledger-label,
+        .overview-metric-label {
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .ledger-value,
+        .overview-metric-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            color: #1A2B1F;
+        }
+
+        .ledger-value.pos,
+        .overview-metric-value.pos {
+            color: var(--g);
+        }
+
+        .ledger-value.neg,
+        .overview-metric-value.neg {
+            color: var(--red);
+        }
+
         .budget-chart-header {
             display: flex;
             justify-content: space-between;
@@ -1126,6 +1183,48 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+        }
+
+        .budget-limit-flow {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .limit-track {
+            height: 10px;
+            border-radius: 99px;
+            background: #EEF2EF;
+            position: relative;
+            margin: 18px 0 8px;
+        }
+
+        .limit-spent-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: var(--g);
+            transition: width 0.2s;
+        }
+
+        .limit-marker {
+            position: absolute;
+            top: -8px;
+            right: 0;
+            width: 2px;
+            height: 26px;
+            border-radius: 99px;
+            background: var(--red);
+        }
+
+        .limit-marker::before {
+            content: 'limit';
+            position: absolute;
+            right: 0;
+            top: -14px;
+            font-size: 9px;
+            color: var(--red);
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .budget-breakdown-row {
@@ -1230,6 +1329,19 @@
             gap: 11px;
             padding: 9px 0;
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .txn-date-group {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            margin: 12px 0 8px;
+        }
+
+        .txn-date-group:first-child {
+            margin-top: 0;
         }
 
         .txn-row:last-child {
@@ -1366,6 +1478,87 @@
 
         .ai-strip.risk .ai-text strong {
             color: #FFB4A8;
+        }
+
+        .overview-chart {
+            height: 112px;
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            padding-top: 8px;
+        }
+
+        .overview-chart-bar {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .overview-bar-fill {
+            width: 100%;
+            max-width: 28px;
+            border-radius: 8px 8px 3px 3px;
+            background: var(--g);
+        }
+
+        .overview-bar-fill.warn {
+            background: var(--amber);
+        }
+
+        .overview-bar-fill.risk {
+            background: var(--red);
+        }
+
+        .overview-chart-label {
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        .chart-card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .chart-card-title strong {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            color: #1A2B1F;
+        }
+
+        .chart-card-title span {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .stats-chart {
+            height: 150px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            padding: 12px 0 6px;
+        }
+
+        .stats-chart-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 7px;
+            min-width: 0;
+        }
+
+        .stats-bar-fill {
+            width: 100%;
+            max-width: 34px;
+            border-radius: 9px 9px 3px 3px;
+            background: linear-gradient(180deg, var(--g2), var(--g));
         }
 
         .ai-risk-label {
@@ -2021,13 +2214,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="dash-tabs">
-                    <button class="dash-tab active" onclick="switchTab('overview', this)">Overview</button>
-                    <button class="dash-tab" onclick="switchTab('budget', this)">Budget</button>
-                    <button class="dash-tab" onclick="switchTab('expenses', this)">Expenses</button>
-                    <button class="dash-tab" onclick="switchTab('subscriptions', this)">Subscriptions</button>
-                    <button class="dash-tab" onclick="switchTab('stats', this)">Stats</button>
-                </div>
+            </div>
+            <div class="dash-tabs">
+                <button class="dash-tab active" onclick="switchTab('overview', this)">Overview</button>
+                <button class="dash-tab" onclick="switchTab('budget', this)">Budget</button>
+                <button class="dash-tab" onclick="switchTab('expenses', this)">Expenses</button>
+                <button class="dash-tab" onclick="switchTab('subscriptions', this)">Subscriptions</button>
+                <button class="dash-tab" onclick="switchTab('stats', this)">Stats</button>
             </div>
             <div class="dash-body">
 
@@ -2054,7 +2247,7 @@
                     </div>
 
                     <div class="stats-grid fade-up delay-2">
-                        <div class="stat-card">
+                        <div class="stat-card clickable" onclick="switchTabByName('expenses')" role="button" tabindex="0">
                             <div class="stat-lbl">Spent this month</div>
                             <div class="stat-val" id="overview-spent">₦311k</div>
                             <div class="stat-bar">
@@ -2068,6 +2261,36 @@
                                 The Steady<br>Builder 🎯
                             </div>
                             <div class="persona-hint">Tap to explore →</div>
+                        </div>
+                    </div>
+
+                    <div class="dash-card fade-up delay-2">
+                        <div class="chart-card-title">
+                            <strong>Money movement</strong>
+                            <span>Last 7 days</span>
+                        </div>
+                        <div class="overview-chart" id="overview-spend-chart"></div>
+                    </div>
+
+                    <div class="dash-card fade-up delay-2">
+                        <div class="section-label">Month snapshot</div>
+                        <div class="overview-metric-grid">
+                            <div class="overview-metric">
+                                <div class="overview-metric-label">Monthly income</div>
+                                <div class="overview-metric-value pos" id="overview-income">₦520,000</div>
+                            </div>
+                            <div class="overview-metric">
+                                <div class="overview-metric-label">Remaining</div>
+                                <div class="overview-metric-value" id="overview-remaining">₦208,760</div>
+                            </div>
+                            <div class="overview-metric">
+                                <div class="overview-metric-label">Budget used</div>
+                                <div class="overview-metric-value neg" id="overview-budget-used">78%</div>
+                            </div>
+                            <div class="overview-metric">
+                                <div class="overview-metric-label">Subscriptions</div>
+                                <div class="overview-metric-value" id="overview-sub-count">2 active</div>
+                            </div>
                         </div>
                     </div>
 
@@ -2102,6 +2325,28 @@
 
                     <div class="section-label">Monthly Budget</div>
 
+                    <div class="dash-card">
+                        <div class="section-label">Income and expense ledger</div>
+                        <div class="budget-ledger-grid">
+                            <div class="ledger-item">
+                                <div class="ledger-label">Income this month</div>
+                                <div class="ledger-value pos" id="ledger-income">₦520,000</div>
+                            </div>
+                            <div class="ledger-item">
+                                <div class="ledger-label">Expenses this month</div>
+                                <div class="ledger-value neg" id="ledger-expenses">₦311,240</div>
+                            </div>
+                            <div class="ledger-item">
+                                <div class="ledger-label">Remaining aggregate</div>
+                                <div class="ledger-value" id="ledger-remaining">₦208,760</div>
+                            </div>
+                            <div class="ledger-item">
+                                <div class="ledger-label">Budget left</div>
+                                <div class="ledger-value" id="ledger-budget-left">₦36,000</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="dash-card budget-summary">
                         <div class="budget-summary-top">
                             <div>
@@ -2128,6 +2373,16 @@
                         </div>
                         <div class="budget-chart-track" id="budget-chart-track"></div>
                         <div class="budget-breakdown-list" id="budget-breakdown-list"></div>
+                        <div class="budget-limit-flow">
+                            <div class="budget-breakdown-row">
+                                <span>Current budget flow</span>
+                                <strong id="budget-limit-label">85% of limit</strong>
+                            </div>
+                            <div class="limit-track">
+                                <div class="limit-spent-fill" id="budget-limit-fill" style="width:85%;"></div>
+                                <div class="limit-marker"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="dash-card" id="budget-category-list"></div>
@@ -2153,107 +2408,7 @@
 
                     <div class="section-label">Recent Expenses</div>
 
-                    <div class="dash-card">
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#FEF3C7;">🍔</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Chicken Republic</div>
-                                <div class="txn-cat">Food</div>
-                            </div>
-                            <div class="txn-amt d">-₦8,400</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#FEE2E2;">🎁</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Gift Transfer</div>
-                                <div class="txn-cat">Personal • Today, 10:14 AM</div>
-                            </div>
-                            <div class="txn-amt d">-₦12,000</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#FED7AA;">⛽</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Fuel Purchase</div>
-                                <div class="txn-cat">Energy • Yesterday</div>
-                            </div>
-                            <div class="txn-amt d">-₦35,000</div>
-                        </div>
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#E0E7FF;">📺</div>
-                            <div class="txn-info">
-                                <div class="txn-name">LG Smart TV</div>
-                                <div class="txn-cat">Appliances • Electronics</div>
-                            </div>
-                            <div class="txn-amt d">-₦450,500</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#DCFCE7;">🛵</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Glovo</div>
-                                <div class="txn-cat">Food Delivery • Yesterday</div>
-                            </div>
-                            <div class="txn-amt d">-₦12,400</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#FEF3C7;">🍔</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Chowdeck</div>
-                                <div class="txn-cat">Food</div>
-                            </div>
-                            <div class="txn-amt d">-₦3,300</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#E0F2FE;">🚘</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Bolt Ride</div>
-                                <div class="txn-cat">Transport • Lekki Route</div>
-                            </div>
-                            <div class="txn-amt d">-₦18,400</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#FEF3C7;">🍔</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Chicken Republic</div>
-                                <div class="txn-cat">Food</div>
-                            </div>
-                            <div class="txn-amt d">-₦8,400</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#E0F2FE;">🚕</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Uber Trip</div>
-                                <div class="txn-cat">Transport</div>
-                            </div>
-                            <div class="txn-amt d">-₦6,200</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#DCFCE7;">🛍️</div>
-                            <div class="txn-info">
-                                <div class="txn-name">Jumia Order</div>
-                                <div class="txn-cat">Shopping</div>
-                            </div>
-                            <div class="txn-amt d">-₦22,000</div>
-                        </div>
-
-                        <div class="txn-row">
-                            <div class="txn-icon" style="background:#FCE7F3;">📱</div>
-                            <div class="txn-info">
-                                <div class="txn-name">MTN Data</div>
-                                <div class="txn-cat">Bills</div>
-                            </div>
-                            <div class="txn-amt d">-₦5,000</div>
-                        </div>
-
-                    </div>
+                    <div class="dash-card" id="expense-list"></div>
 
                 </div>
 
@@ -2313,6 +2468,14 @@
                 <div class="tab-content" id="tab-stats">
 
                     <div class="section-label">Spending Statistics</div>
+
+                    <div class="dash-card">
+                        <div class="chart-card-title">
+                            <strong>Weekly spend trend</strong>
+                            <span>Daily outflow</span>
+                        </div>
+                        <div class="stats-chart" id="stats-spend-chart"></div>
+                    </div>
 
                     <div class="stats-grid">
 
@@ -2624,6 +2787,31 @@
             }
         ];
 
+        const expenses = [
+            { date: 'Today', merchant: 'Chicken Republic', category: 'Food', meta: 'GTBank · 1:24 PM', amount: -8400, icon: '🍔', bg: '#FEF3C7' },
+            { date: 'Today', merchant: 'Gift Transfer', category: 'Personal', meta: 'Wema · 10:14 AM', amount: -12000, icon: '🎁', bg: '#FEE2E2' },
+            { date: 'Today', merchant: 'Netflix', category: 'Subscription', meta: 'GTBank · 8:00 AM', amount: -4200, icon: '🎬', bg: '#FEE2E2' },
+            { date: 'Yesterday', merchant: 'Fuel Purchase', category: 'Energy', meta: 'Wema · 6:42 PM', amount: -35000, icon: '⛽', bg: '#FED7AA' },
+            { date: 'Yesterday', merchant: 'Glovo', category: 'Food Delivery', meta: 'Kuda · 3:18 PM', amount: -12400, icon: '🛵', bg: '#DCFCE7' },
+            { date: 'Yesterday', merchant: 'Bolt Ride', category: 'Transport', meta: 'Kuda · Lekki Route', amount: -18400, icon: '🚘', bg: '#E0F2FE' },
+            { date: 'May 12', merchant: 'Chowdeck', category: 'Food', meta: 'Kuda · Dinner', amount: -3300, icon: '🍔', bg: '#FEF3C7' },
+            { date: 'May 12', merchant: 'Uber Trip', category: 'Transport', meta: 'GTBank · Island commute', amount: -6200, icon: '🚕', bg: '#E0F2FE' },
+            { date: 'May 11', merchant: 'Jumia Order', category: 'Shopping', meta: 'Wema · Household', amount: -22000, icon: '🛍️', bg: '#DCFCE7' },
+            { date: 'May 11', merchant: 'MTN Data', category: 'Bills', meta: 'Kuda · Mobile data', amount: -5000, icon: '📱', bg: '#FCE7F3' },
+            { date: 'May 10', merchant: 'Spotify Premium', category: 'Subscription', meta: 'Wema · Monthly renewal', amount: -2900, icon: '🎵', bg: '#DCFCE7' },
+            { date: 'May 09', merchant: 'Groceries', category: 'Food', meta: 'GTBank · Supermart', amount: -15000, icon: '🧾', bg: '#E0E7FF' }
+        ];
+
+        const weeklySpend = [
+            { day: 'Fri', amount: 24000 },
+            { day: 'Sat', amount: 38000 },
+            { day: 'Sun', amount: 21000 },
+            { day: 'Mon', amount: 45500 },
+            { day: 'Tue', amount: 29500 },
+            { day: 'Wed', amount: 65800 },
+            { day: 'Thu', amount: 104000 }
+        ];
+
         const personaTraits = {
             savings: {
                 label: 'Savings discipline',
@@ -2700,6 +2888,10 @@
             return `₦${amount.toLocaleString()}`;
         }
 
+        function parseCurrency(value) {
+            return Number(String(value).replace(/[^\d]/g, '')) || 0;
+        }
+
         function selectBank(bankId, el) {
             const bank = banks[bankId];
             if (!bank) return;
@@ -2721,6 +2913,7 @@
             setText('balance-saved', bank.saved);
             setText('overview-spent', compactCurrency(bank.spent));
             setText('bank-activity-title', `${bank.label} activity`);
+            renderOverviewSnapshot();
 
             const spentBar = document.getElementById('overview-spent-bar');
             if (spentBar) spentBar.style.width = `${bankSpendBars[bankId]}%`;
@@ -2776,6 +2969,9 @@
 
             const progress = document.getElementById('budget-total-progress');
             if (progress) progress.style.width = `${percentage}%`;
+
+            renderBudgetLedger();
+            renderOverviewSnapshot();
         }
 
         function renderBudgetCategories() {
@@ -2808,9 +3004,16 @@
             setText('budget-chart-value', `${category.percentage}%`);
             setText('budget-detail-title', category.name);
             setText('budget-detail-meta', category.projection);
+            setText('budget-limit-label', `${category.percentage}% of limit`);
 
             const chart = document.getElementById('budget-chart-track');
             if (chart) chart.innerHTML = segments;
+
+            const limitFill = document.getElementById('budget-limit-fill');
+            if (limitFill) {
+                limitFill.style.width = `${Math.min(category.percentage, 100)}%`;
+                limitFill.style.background = category.percentage >= 85 ? 'var(--red)' : category.percentage >= 70 ? 'var(--amber)' : 'var(--g)';
+            }
 
             const breakdown = document.getElementById('budget-breakdown-list');
             if (breakdown) {
@@ -2864,6 +3067,85 @@
             renderBudgetSummary();
             renderBudgetCategories();
             renderBudgetDetail();
+        }
+
+        function renderBudgetLedger() {
+            const bank = banks.all;
+            const income = parseCurrency(bank.income);
+            const spent = parseCurrency(bank.spent);
+            const budgetLimit = budgetCategories.reduce((sum, category) => sum + category.limit, 0);
+            const budgetSpent = budgetCategories.reduce((sum, category) => sum + category.spent, 0);
+
+            setText('ledger-income', formatNaira(income));
+            setText('ledger-expenses', formatNaira(spent));
+            setText('ledger-remaining', formatNaira(Math.max(income - spent, 0)));
+            setText('ledger-budget-left', formatNaira(Math.max(budgetLimit - budgetSpent, 0)));
+        }
+
+        function renderOverviewSnapshot() {
+            const bank = banks.all;
+            const income = parseCurrency(bank.income);
+            const spent = parseCurrency(bank.spent);
+            const budgetLimit = budgetCategories.reduce((sum, category) => sum + category.limit, 0);
+            const budgetSpent = budgetCategories.reduce((sum, category) => sum + category.spent, 0);
+            const activeSubs = subscriptions.filter(subscription => subscription.status === 'active').length;
+
+            setText('overview-income', formatNaira(income));
+            setText('overview-remaining', formatNaira(Math.max(income - spent, 0)));
+            setText('overview-budget-used', `${Math.round((budgetSpent / budgetLimit) * 100)}%`);
+            setText('overview-sub-count', `${activeSubs} active`);
+        }
+
+        function renderSpendCharts() {
+            const max = Math.max(...weeklySpend.map(item => item.amount));
+            const overviewChart = document.getElementById('overview-spend-chart');
+            const statsChart = document.getElementById('stats-spend-chart');
+
+            const bars = weeklySpend.map(item => {
+                const height = Math.max(Math.round((item.amount / max) * 96), 18);
+                const tone = item.amount > 80000 ? 'risk' : item.amount > 45000 ? 'warn' : '';
+                return `
+                    <div class="overview-chart-bar">
+                        <div class="overview-bar-fill ${tone}" style="height:${height}px;"></div>
+                        <div class="overview-chart-label">${item.day}</div>
+                    </div>
+                `;
+            }).join('');
+
+            if (overviewChart) overviewChart.innerHTML = bars;
+            if (statsChart) {
+                statsChart.innerHTML = weeklySpend.map(item => {
+                    const height = Math.max(Math.round((item.amount / max) * 126), 22);
+                    return `
+                        <div class="stats-chart-bar">
+                            <div class="stats-bar-fill" style="height:${height}px;"></div>
+                            <div class="overview-chart-label">${item.day}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function renderExpenses() {
+            const list = document.getElementById('expense-list');
+            if (!list) return;
+
+            let currentDate = '';
+            list.innerHTML = expenses.map(expense => {
+                const dateLabel = expense.date !== currentDate ? `<div class="txn-date-group">${expense.date}</div>` : '';
+                currentDate = expense.date;
+                return `
+                    ${dateLabel}
+                    <div class="txn-row">
+                        <div class="txn-icon" style="background:${expense.bg};">${expense.icon}</div>
+                        <div class="txn-info">
+                            <div class="txn-name">${expense.merchant}</div>
+                            <div class="txn-cat">${expense.category} · ${expense.meta}</div>
+                        </div>
+                        <div class="txn-amt d">${formatNaira(Math.abs(expense.amount)).replace('₦', '-₦')}</div>
+                    </div>
+                `;
+            }).join('');
         }
 
         function getSubscription(subscriptionId) {
@@ -3033,7 +3315,7 @@
                 btn.classList.remove('active');
             });
 
-            el.classList.add('active');
+            if (el) el.classList.add('active');
 
             document.querySelectorAll('.tab-content').forEach(tabContent => {
                 tabContent.classList.remove('active');
@@ -3041,6 +3323,14 @@
 
             document.getElementById(`tab-${tab}`).classList.add('active');
         }
+
+        function switchTabByName(tab) {
+            const tabButton = Array.from(document.querySelectorAll('.dash-tab')).find(button =>
+                button.getAttribute('onclick') && button.getAttribute('onclick').includes(`'${tab}'`)
+            );
+            switchTab(tab, tabButton);
+        }
+
         function startLoading() {
             go('s-loading');
             ['lstep-1', 'lstep-2', 'lstep-3', 'lstep-4'].forEach((id, i) => {
@@ -3062,6 +3352,10 @@
             renderSubscriptionDetail();
             renderTraits();
             renderTraitDetail();
+            renderBudgetLedger();
+            renderOverviewSnapshot();
+            renderSpendCharts();
+            renderExpenses();
 
             const riskCard = document.getElementById('budget-risk-card');
             if (riskCard) {
