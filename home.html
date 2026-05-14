@@ -814,6 +814,19 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
+        .sub-row.clickable {
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+
+        .sub-row.clickable:hover {
+            transform: translateY(-1px);
+        }
+
+        .sub-row.active {
+            background: rgba(0, 132, 61, 0.07);
+            border-color: rgba(0, 132, 61, 0.24);
+        }
 
         .sub-icon {
             width: 36px;
@@ -846,6 +859,89 @@
             font-size: 13px;
             font-weight: 600;
             color: #1A2B1F;
+        }
+
+        .filter-chip-row {
+            display: flex;
+            gap: 7px;
+            overflow-x: auto;
+            margin-bottom: 12px;
+            padding-bottom: 2px;
+        }
+
+        .filter-chip-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            border: 1px solid rgba(0, 132, 61, 0.13);
+            background: #fff;
+            color: var(--muted);
+            border-radius: 99px;
+            padding: 8px 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .filter-chip.active {
+            background: var(--g);
+            border-color: var(--g);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .subscription-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+            margin: 12px 0;
+        }
+
+        .subscription-detail-item {
+            border-radius: 12px;
+            background: #FAFAFA;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            padding: 10px;
+        }
+
+        .subscription-detail-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.45px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .subscription-detail-value {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1A2B1F;
+        }
+
+        .subscription-note {
+            font-size: 11px;
+            line-height: 1.55;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        .subscription-cancel-state {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(26, 95, 171, 0.08);
+            color: var(--blue);
+            font-size: 11px;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .subscription-cancel-state.visible {
+            display: block;
         }
 
         .stats-grid {
@@ -1440,6 +1536,18 @@
             border: 1px solid rgba(255, 255, 255, 0.07);
             border-radius: 14px;
             padding: 14px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, transform 0.15s;
+        }
+
+        .trait-card:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .trait-card.active {
+            background: rgba(0, 132, 61, 0.12);
+            border-color: rgba(0, 168, 79, 0.42);
         }
 
         .trait-score {
@@ -1465,6 +1573,60 @@
         .trait-ring-fill {
             height: 100%;
             border-radius: 99px;
+        }
+
+        .trait-detail-card {
+            background: rgba(0, 132, 61, 0.08);
+            border: 1px solid rgba(0, 132, 61, 0.2);
+            border-radius: 14px;
+            padding: 15px 16px;
+            margin-bottom: 10px;
+        }
+
+        .trait-detail-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .trait-detail-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .trait-detail-score {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--g2);
+        }
+
+        .trait-detail-copy {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.6;
+            margin-bottom: 9px;
+        }
+
+        .trait-detail-copy strong {
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .trait-action-btn {
+            width: 100%;
+            border: 1px solid rgba(0, 168, 79, 0.48);
+            background: rgba(0, 132, 61, 0.12);
+            color: var(--g2);
+            border-radius: 12px;
+            padding: 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         .insight-card {
@@ -2059,60 +2221,51 @@
                 <!-- SUBSCRIPTIONS TAB -->
                 <div class="tab-content" id="tab-subscriptions">
 
-                    <div class="section-label">
-                        Active Subscriptions
+                    <div class="section-label">Subscriptions</div>
+
+                    <div class="filter-chip-row" aria-label="Filter subscriptions">
+                        <button class="filter-chip active" onclick="filterSubscriptions('all', this)">All</button>
+                        <button class="filter-chip" onclick="filterSubscriptions('active', this)">Active</button>
+                        <button class="filter-chip" onclick="filterSubscriptions('inactive', this)">Inactive</button>
+                        <button class="filter-chip" onclick="filterSubscriptions('wema', this)">Wema</button>
+                        <button class="filter-chip" onclick="filterSubscriptions('gtbank', this)">GTBank</button>
+                        <button class="filter-chip" onclick="filterSubscriptions('kuda', this)">Kuda</button>
+                        <button class="filter-chip" onclick="filterSubscriptions('due', this)">Due soon</button>
                     </div>
 
-                    <div class="dash-card">
+                    <div class="dash-card" id="subscription-list"></div>
 
-                        <div class="sub-row">
-                            <div class="sub-icon" style="background:#FEE2E2;">🎬</div>
-
-                            <div class="sub-info">
-                                <div class="sub-name">Netflix</div>
-                                <div class="sub-meta">Monthly · ₦4,200</div>
-                                <div class="cancel-link">Cancel from GTBank recurring payments</div>
+                    <div class="dash-card" id="subscription-detail-card">
+                        <div class="budget-detail-title" id="subscription-detail-name">Netflix</div>
+                        <div class="budget-detail-meta" id="subscription-detail-summary">
+                            Monthly subscription paid from GTBank.
+                        </div>
+                        <div class="subscription-detail-grid">
+                            <div class="subscription-detail-item">
+                                <div class="subscription-detail-label">Amount</div>
+                                <div class="subscription-detail-value" id="subscription-detail-amount">₦4,200</div>
+                            </div>
+                            <div class="subscription-detail-item">
+                                <div class="subscription-detail-label">Payment source</div>
+                                <div class="subscription-detail-value" id="subscription-detail-bank">GTBank</div>
+                            </div>
+                            <div class="subscription-detail-item">
+                                <div class="subscription-detail-label">Last charge</div>
+                                <div class="subscription-detail-value" id="subscription-detail-last">Apr 28</div>
+                            </div>
+                            <div class="subscription-detail-item">
+                                <div class="subscription-detail-label">Next charge</div>
+                                <div class="subscription-detail-value" id="subscription-detail-next">May 28</div>
                             </div>
                         </div>
-
-                        <div class="sub-row">
-                            <div class="sub-icon" style="background:#DCFCE7;">🎵</div>
-
-                            <div class="sub-info">
-                                <div class="sub-name">Spotify Premium</div>
-                                <div class="sub-meta">Monthly · ₦2,900</div>
-                                <div class="cancel-link">Cancel from Apple App Store subscriptions</div>
-                            </div>
+                        <div class="subscription-note" id="subscription-detail-note">
+                            Review alongside DStv to reduce overlapping entertainment spend.
                         </div>
-
-                    </div>
-
-                    <div class="section-label">
-                        Inactive Subscriptions
-                    </div>
-
-                    <div class="dash-card">
-
-                        <div class="sub-row">
-                            <div class="sub-icon" style="background:#E5E7EB;">📺</div>
-
-                            <div class="sub-info">
-                                <div class="sub-name">Showmax</div>
-                                <div class="sub-meta">Cancelled 2 months ago</div>
-                                <div class="expense-badge">No active billing</div>
-                            </div>
+                        <button class="budget-edit-btn" id="subscription-cancel-btn"
+                            onclick="startCancelSubscription()">Cancel guidance</button>
+                        <div class="subscription-cancel-state" id="subscription-cancel-state">
+                            Cancellation guide opened. We will remind you before the next charge.
                         </div>
-
-                        <div class="sub-row">
-                            <div class="sub-icon" style="background:#E5E7EB;">☁️</div>
-
-                            <div class="sub-info">
-                                <div class="sub-name">iCloud+</div>
-                                <div class="sub-meta">Expired subscription</div>
-                                <div class="expense-badge">Inactive</div>
-                            </div>
-                        </div>
-
                     </div>
 
                 </div>
@@ -2182,35 +2335,25 @@
                     <div class="persona-desc">You earn consistently, save above average, but let subscriptions and
                         convenience spending creep up quietly.</div>
                 </div>
-                <div class="trait-grid">
-                    <div class="trait-card">
-                        <div class="trait-score" style="color:#7FE4A8;">82</div>
-                        <div class="trait-name">Savings discipline</div>
-                        <div class="trait-ring">
-                            <div class="trait-ring-fill" style="width:82%;background:#7FE4A8;"></div>
+                <div class="trait-grid" id="trait-grid"></div>
+                <div class="trait-detail-card">
+                    <div class="trait-detail-head">
+                        <div>
+                            <div class="insight-tag">Trait detail</div>
+                            <div class="trait-detail-title" id="trait-detail-title">Savings discipline</div>
                         </div>
+                        <div class="trait-detail-score" id="trait-detail-score">82</div>
                     </div>
-                    <div class="trait-card">
-                        <div class="trait-score" style="color:#FCD34D;">54</div>
-                        <div class="trait-name">Spending control</div>
-                        <div class="trait-ring">
-                            <div class="trait-ring-fill" style="width:54%;background:#FCD34D;"></div>
-                        </div>
+                    <div class="trait-detail-copy" id="trait-detail-reason">
+                        <strong>Why:</strong> You save consistently after salary day.
                     </div>
-                    <div class="trait-card">
-                        <div class="trait-score" style="color:#93C5FD;">71</div>
-                        <div class="trait-name">Bill punctuality</div>
-                        <div class="trait-ring">
-                            <div class="trait-ring-fill" style="width:71%;background:#93C5FD;"></div>
-                        </div>
+                    <div class="trait-detail-copy" id="trait-detail-evidence">
+                        <strong>Evidence:</strong> Salary inflow and savings transfers are stable across the month.
                     </div>
-                    <div class="trait-card">
-                        <div class="trait-score" style="color:#FCA5A5;">38</div>
-                        <div class="trait-name">Sub efficiency</div>
-                        <div class="trait-ring">
-                            <div class="trait-ring-fill" style="width:38%;background:#FCA5A5;"></div>
-                        </div>
+                    <div class="trait-detail-copy" id="trait-detail-recommendation">
+                        <strong>Recommendation:</strong> Keep ₦50,000 automated into Wema Fixed Savings.
                     </div>
+                    <button class="trait-action-btn" onclick="go('s-crosssell')">Explore related Wema option</button>
                 </div>
                 <div class="insight-card">
                     <div class="insight-tag">Pattern detected</div>
@@ -2488,10 +2631,20 @@
         };
 
         const budgetColors = ['#00843D', '#F59E0B', '#1A5FAB', '#C0392B'];
+        const traitColors = {
+            savings: '#7FE4A8',
+            control: '#FCD34D',
+            bills: '#93C5FD',
+            subscriptions: '#FCA5A5'
+        };
 
         let current = 's-splash';
         let selectedBank = 'all';
         let selectedBudgetCategory = 'food';
+        let selectedSubscription = 'netflix';
+        let subscriptionFilter = 'all';
+        let selectedTrait = 'savings';
+        const cancelledGuidance = {};
 
         function compactCurrency(value) {
             const amount = Number(value.replace(/[^\d]/g, ''));
@@ -2673,6 +2826,154 @@
             renderBudgetDetail();
         }
 
+        function getSubscription(subscriptionId) {
+            return subscriptions.find(subscription => subscription.id === subscriptionId) || subscriptions[0];
+        }
+
+        function isSubscriptionDueSoon(subscription) {
+            return subscription.status === 'active' && ['netflix', 'spotify'].includes(subscription.id);
+        }
+
+        function getVisibleSubscriptions() {
+            return subscriptions.filter(subscription => {
+                if (subscriptionFilter === 'all') return true;
+                if (subscriptionFilter === 'active' || subscriptionFilter === 'inactive') {
+                    return subscription.status === subscriptionFilter;
+                }
+                if (subscriptionFilter === 'due') return isSubscriptionDueSoon(subscription);
+                return subscription.bank.toLowerCase() === subscriptionFilter;
+            });
+        }
+
+        function subscriptionIcon(subscription) {
+            const icons = {
+                netflix: { icon: '🎬', bg: '#FEE2E2' },
+                spotify: { icon: '🎵', bg: '#DCFCE7' },
+                showmax: { icon: '📺', bg: '#E5E7EB' },
+                icloud: { icon: '☁️', bg: '#E5E7EB' }
+            };
+            return icons[subscription.id] || { icon: '◯', bg: '#E5E7EB' };
+        }
+
+        function renderSubscriptionList() {
+            const list = document.getElementById('subscription-list');
+            if (!list) return;
+
+            const visibleSubscriptions = getVisibleSubscriptions();
+            if (!visibleSubscriptions.some(subscription => subscription.id === selectedSubscription) && visibleSubscriptions[0]) {
+                selectedSubscription = visibleSubscriptions[0].id;
+            }
+
+            if (!visibleSubscriptions.length) {
+                list.innerHTML = '<div class="sub-meta">No subscriptions match this filter.</div>';
+                return;
+            }
+
+            list.innerHTML = visibleSubscriptions.map(subscription => {
+                const icon = subscriptionIcon(subscription);
+                const statusLabel = subscription.status === 'active' ? 'Active' : 'Inactive';
+                return `
+                    <div class="sub-row clickable ${subscription.id === selectedSubscription ? 'active' : ''}"
+                        onclick="selectSubscription('${subscription.id}')">
+                        <div class="sub-icon" style="background:${icon.bg};">${icon.icon}</div>
+                        <div class="sub-info">
+                            <div class="sub-name">${subscription.name}</div>
+                            <div class="sub-meta">${subscription.cycle} · ${subscription.amount} · Paid from ${subscription.bank}</div>
+                            <div class="expense-badge">${statusLabel}</div>
+                        </div>
+                        <div class="sub-amt">${subscription.nextCharge}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderSubscriptionDetail() {
+            const subscription = getSubscription(selectedSubscription);
+            const cancelState = document.getElementById('subscription-cancel-state');
+
+            setText('subscription-detail-name', subscription.name);
+            setText('subscription-detail-summary', `${subscription.cycle} subscription paid from ${subscription.bank}.`);
+            setText('subscription-detail-amount', subscription.amount);
+            setText('subscription-detail-bank', subscription.bank);
+            setText('subscription-detail-last', subscription.lastCharge);
+            setText('subscription-detail-next', subscription.nextCharge);
+            setText('subscription-detail-note', `${subscription.note} ${subscription.cancelPath}.`);
+
+            const cancelBtn = document.getElementById('subscription-cancel-btn');
+            if (cancelBtn) {
+                cancelBtn.textContent = subscription.status === 'active' ? 'Cancel guidance' : 'View status';
+            }
+
+            if (cancelState) {
+                cancelState.classList.toggle('visible', Boolean(cancelledGuidance[subscription.id]));
+                cancelState.textContent = subscription.status === 'active'
+                    ? 'Cancellation guide opened. We will remind you before the next charge.'
+                    : 'This subscription is not actively billing, so no cancellation action is needed.';
+            }
+        }
+
+        function selectSubscription(subscriptionId) {
+            selectedSubscription = subscriptionId;
+            renderSubscriptionList();
+            renderSubscriptionDetail();
+        }
+
+        function filterSubscriptions(filterId, el) {
+            subscriptionFilter = filterId;
+            document.querySelectorAll('#tab-subscriptions .filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+            if (el) el.classList.add('active');
+            renderSubscriptionList();
+            renderSubscriptionDetail();
+        }
+
+        function startCancelSubscription() {
+            const subscription = getSubscription(selectedSubscription);
+            cancelledGuidance[subscription.id] = true;
+            renderSubscriptionDetail();
+        }
+
+        function renderTraits() {
+            const grid = document.getElementById('trait-grid');
+            if (!grid) return;
+
+            grid.innerHTML = Object.entries(personaTraits).map(([traitId, trait]) => {
+                const color = traitColors[traitId];
+                return `
+                    <div class="trait-card ${traitId === selectedTrait ? 'active' : ''}" onclick="selectTrait('${traitId}')">
+                        <div class="trait-score" style="color:${color};">${trait.score}</div>
+                        <div class="trait-name">${trait.label}</div>
+                        <div class="trait-ring">
+                            <div class="trait-ring-fill" style="width:${trait.score}%;background:${color};"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderTraitDetail() {
+            const trait = personaTraits[selectedTrait];
+            if (!trait) return;
+
+            setText('trait-detail-title', trait.label);
+            setText('trait-detail-score', trait.score);
+
+            const reason = document.getElementById('trait-detail-reason');
+            const evidence = document.getElementById('trait-detail-evidence');
+            const recommendation = document.getElementById('trait-detail-recommendation');
+
+            if (reason) reason.innerHTML = `<strong>Why:</strong> ${trait.reason}`;
+            if (evidence) evidence.innerHTML = `<strong>Evidence:</strong> ${trait.evidence}`;
+            if (recommendation) recommendation.innerHTML = `<strong>Recommendation:</strong> ${trait.recommendation}`;
+        }
+
+        function selectTrait(traitId) {
+            selectedTrait = traitId;
+            renderTraits();
+            renderTraitDetail();
+        }
+
         function go(id) {
             const prev = document.getElementById(current);
             const next = document.getElementById(id);
@@ -2715,6 +3016,10 @@
             renderBudgetSummary();
             renderBudgetCategories();
             renderBudgetDetail();
+            renderSubscriptionList();
+            renderSubscriptionDetail();
+            renderTraits();
+            renderTraitDetail();
 
             const riskCard = document.getElementById('budget-risk-card');
             if (riskCard) {
