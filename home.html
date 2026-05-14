@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --g: #00843D;
+            --g2: #00A84F;
+            --g-light: #E6F4EC;
+            --dark: #0A1510;
+            --dark2: #0F1E16;
+            --card: #ffffff;
+            --surface: #F3F6F4;
+            --muted: #6B7F72;
+            --border: rgba(0, 132, 61, 0.13);
+            --red: #C0392B;
+            --amber: #D97706;
+            --blue: #1A5FAB;
+            --r: 16px;
+            --r-sm: 10px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app {
+            width: 390px;
+            height: 700px;
+            position: relative;
+            overflow: hidden;
+            background: var(--dark);
+            font-family: 'DM Sans', sans-serif;
+            border-radius: 36px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+        }
+
+        .screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.45s cubic-bezier(.4, 0, .2, 1), transform 0.45s cubic-bezier(.4, 0, .2, 1);
+            transform: translateY(18px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .screen::-webkit-scrollbar {
+            display: none;
+        }
+
+        .screen.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .screen.exit {
+            opacity: 0;
+            transform: translateY(-14px);
+        }
+
+        /* SPLASH */
+        #s-splash {
+            background: var(--dark);
+            justify-content: space-between;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .splash-bg {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(0, 132, 61, 0.22) 0%, transparent 70%);
+        }
+
+        .splash-orb {
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .orb1 {
+            width: 220px;
+            height: 220px;
+            top: -60px;
+            left: -60px;
+            background: radial-gradient(circle, rgba(0, 164, 79, 0.15), transparent 70%);
+        }
+
+        .orb2 {
+            width: 160px;
+            height: 160px;
+            bottom: 80px;
+            right: -40px;
+            background: radial-gradient(circle, rgba(0, 132, 61, 0.12), transparent 70%);
+        }
+
+        .splash-top {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 32px 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .splash-logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 52px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .splash-logo span {
+            color: var(--g2);
+        }
+
+        .splash-tag {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 0.5px;
+            margin-bottom: 48px;
+        }
+
+        .splash-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 22px;
+            margin-bottom: 24px;
+        }
+
+        .splash-stat-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .splash-stat {
+            flex: 1;
+            background: rgba(0, 132, 61, 0.12);
+            border: 1px solid rgba(0, 132, 61, 0.18);
+            border-radius: 12px;
+            padding: 14px 12px;
+            text-align: center;
+        }
+
+        .splash-stat-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .splash-stat-lbl {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 3px;
+        }
+
+        .splash-mini-bars {
+            margin-top: 16px;
+        }
+
+        .mini-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .mini-bar-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            width: 70px;
+            flex-shrink: 0;
+        }
+
+        .mini-bar-track {
+            flex: 1;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .mini-bar-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: var(--g2);
+        }
+
+        .splash-bottom {
+            padding: 24px 24px 36px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: var(--g);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.2px;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-primary:hover {
+            background: var(--g2);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .splash-powered {
+            text-align: center;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 12px;
+        }
+
+        /* SIGN UP */
+        #s-signup {
+            background: var(--dark);
+            padding: 0;
+            justify-content: space-between;
+        }
+
+        .signup-top {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 60px 28px 32px;
+        }
+
+        .back-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            border: none;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .screen-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.8px;
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+
+        .screen-sub {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .divider-line {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .divider-line::before,
+        .divider-line::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .divider-line span {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .google-btn {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .google-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .g-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: conic-gradient(#EA4335 0deg 90deg, #FBBC04 90deg 180deg, #34A853 180deg 270deg, #4285F4 270deg 360deg);
+        }
+
+        .privacy-note {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.25);
+            text-align: center;
+            line-height: 1.6;
+            padding: 0 8px 36px;
+        }
+
+        .privacy-note a {
+            color: var(--g2);
+            text-decoration: none;
+        }
+
+        /* CONNECT */
+        #s-connect {
+            background: var(--dark);
+            padding: 0;
+        }
+
+        .connect-inner {
+            padding: 52px 24px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 132, 61, 0.12);
+            border: 1px solid rgba(0, 132, 61, 0.2);
+            border-radius: 99px;
+            padding: 5px 12px;
+            font-size: 11px;
+            color: var(--g2);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .step-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--g2);
+        }
+
+        .bank-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 28px 0;
+        }
+
+        .bank-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .bank-row.selected {
+            border-color: rgba(0, 132, 61, 0.4);
+            background: rgba(0, 132, 61, 0.07);
+        }
+
+        .bank-row-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bank-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .bank-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .bank-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .bank-row.selected .bank-check {
+            background: var(--g);
+            border-color: var(--g);
+        }
+
+        .bank-check-icon {
+            font-size: 11px;
+            color: #fff;
+            display: none;
+        }
+
+        .bank-row.selected .bank-check-icon {
+            display: block;
+        }
+
+        .consent-note {
+            background: rgba(0, 132, 61, 0.08);
+            border: 1px solid rgba(0, 132, 61, 0.15);
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .consent-note strong {
+            color: var(--g2);
+        }
+
+        /* LOADING */
+        #s-loading {
+            background: var(--dark);
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .pulse-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 132, 61, 0.2);
+            border-top-color: var(--g2);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 8px;
+            position: relative;
+        }
+
+        .pulse-ring::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 132, 61, 0.1);
+            border-top-color: rgba(0, 164, 79, 0.4);
+            animation: spin 1.6s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-label {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 20px;
+            margin-bottom: 6px;
+        }
+
+        .loading-sub {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+            line-height: 1.6;
+        }
+
+        .loading-steps {
+            margin-top: 28px;
+            text-align: left;
+            width: 100%;
+        }
+
+        .loading-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.35);
+            transition: color 0.3s;
+        }
+
+        .loading-step.done {
+            color: var(--g2);
+        }
+
+        .step-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            flex-shrink: 0;
+        }
+
+        .loading-step.done .step-icon {
+            background: rgba(0, 132, 61, 0.2);
+            color: var(--g2);
+        }
+
+        /* DASHBOARD */
+        #s-dashboard {
+            background: var(--surface);
+        }
+
+        .dash-header {
+            background: var(--dark);
+            padding: 48px 22px 24px;
+            border-radius: 0 0 28px 28px;
+        }
+
+        .dash-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .dash-greeting {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 3px;
+        }
+
+        .dash-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .notif-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.07);
+            border: none;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .balance-block {
+            margin-bottom: 20px;
+        }
+
+        .bal-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 4px;
+        }
+
+        .bal-amount {
+            font-family: 'Syne', sans-serif;
+            font-size: 34px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -1.2px;
+        }
+
+        .bal-sub {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+            margin-top: 3px;
+        }
+
+        .bal-row {
+            display: flex;
+            gap: 20px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .bal-item-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .bal-item-val {
+            font-size: 13px;
+            font-weight: 500;
+            color: #fff;
+            margin-top: 2px;
+        }
+
+        .bal-item-val.pos {
+            color: #7FE4A8;
+        }
+
+        .bal-item-val.neg {
+            color: #FFAAAA;
+        }
+
+        .dash-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 2px;
+            justify-content: center;
+        }
+
+        .dash-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .dash-tab {
+            white-space: nowrap;
+            padding: 7px 16px;
+            border-radius: 99px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .dash-tab.active {
+            background: var(--g);
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .dash-tab:not(.active) {
+            background: rgba(255, 255, 255, 0.07);
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .dash-body {
+            padding: 16px 18px 100px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .cancel-link {
+            font-size: 11px;
+            color: var(--blue);
+            margin-top: 4px;
+            cursor: pointer;
+        }
+
+        .cancel-link:hover {
+            text-decoration: underline;
+        }
+
+        .expense-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 99px;
+            background: rgba(0, 132, 61, 0.1);
+            color: var(--g);
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .section-label {
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #1A2B1F;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-label span {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--g);
+            cursor: pointer;
+        }
+
+        .dash-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .sub-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            background: #FAFAFA;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+
+        .sub-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            flex-shrink: 0;
+        }
+
+        .sub-info {
+            flex: 1;
+        }
+
+        .sub-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1A2B1F;
+        }
+
+        .sub-meta {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .sub-amt {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1A2B1F;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-card.dark {
+            background: var(--dark);
+            cursor: pointer;
+        }
+
+        .stat-lbl {
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .stat-card.dark .stat-lbl {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .stat-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A2B1F;
+        }
+
+        .stat-card.dark .stat-val {
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .stat-bar {
+            height: 4px;
+            background: #F0F0F0;
+            border-radius: 99px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: var(--g);
+        }
+
+        .persona-hint {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 6px;
+        }
+
+        .txn-row {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .txn-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .txn-row:first-child {
+            padding-top: 0;
+        }
+
+        .txn-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .txn-info {
+            flex: 1;
+        }
+
+        .txn-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: #1A2B1F;
+        }
+
+        .txn-cat {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .txn-amt {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .txn-amt.d {
+            color: var(--red);
+        }
+
+        .txn-amt.c {
+            color: var(--g);
+        }
+
+        .bottom-nav {
+            position: relative;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 12px 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            z-index: 10;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            padding: 4px 14px;
+            font-size: 9px;
+            color: var(--muted);
+            transition: color 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--g);
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        .ai-strip {
+            background: var(--dark);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .ai-pulse {
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            border-radius: 9px;
+            background: rgba(0, 132, 61, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .ai-text {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.6;
+        }
+
+        .ai-text strong {
+            color: var(--g2);
+        }
+
+        /* PERSONA */
+        #s-persona {
+            background: var(--dark);
+            padding: 0;
+        }
+
+        .persona-inner {
+            padding: 52px 24px 100px;
+            flex: 1;
+        }
+
+        .persona-hero {
+            background: linear-gradient(135deg, rgba(0, 132, 61, 0.2) 0%, rgba(0, 0, 0, 0) 60%);
+            border: 1px solid rgba(0, 132, 61, 0.2);
+            border-radius: 24px;
+            padding: 28px 22px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .persona-emoji {
+            font-size: 52px;
+            margin-bottom: 12px;
+        }
+
+        .persona-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .persona-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.65;
+        }
+
+        .trait-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .trait-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 14px;
+            padding: 14px;
+        }
+
+        .trait-score {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .trait-name {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 2px;
+        }
+
+        .trait-ring {
+            height: 3px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 99px;
+            margin-top: 9px;
+            overflow: hidden;
+        }
+
+        .trait-ring-fill {
+            height: 100%;
+            border-radius: 99px;
+        }
+
+        .insight-card {
+            background: rgba(0, 132, 61, 0.08);
+            border: 1px solid rgba(0, 132, 61, 0.2);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+        }
+
+        .insight-tag {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--g2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .insight-body {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.6;
+        }
+
+        .btn-outline-green {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 1.5px solid var(--g);
+            color: var(--g2);
+            border-radius: 14px;
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-outline-green:hover {
+            background: rgba(0, 132, 61, 0.1);
+        }
+
+        /* CROSS-SELL */
+        #s-crosssell {
+            background: var(--surface);
+            padding: 0;
+        }
+
+        .crosssell-inner {
+            padding: 52px 20px 100px;
+        }
+
+        .offer-card {
+            border-radius: 22px;
+            padding: 22px;
+            margin-bottom: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offer-card.invest,
+        .offer-card.credit {
+            background: var(--dark);
+        }
+
+        .offer-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 4px 10px;
+            border-radius: 99px;
+            margin-bottom: 10px;
+        }
+
+        .offer-badge.green {
+            background: rgba(0, 132, 61, 0.2);
+            color: var(--g2);
+        }
+
+        .offer-badge.blue {
+            background: rgba(26, 95, 171, 0.2);
+            color: #60A5FA;
+        }
+
+        .offer-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.4px;
+            margin-bottom: 6px;
+        }
+
+        .offer-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .offer-stat {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 7px 12px;
+            font-size: 12px;
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .offer-stat-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--g2);
+        }
+
+        .offer-bg-icon {
+            position: absolute;
+            right: -10px;
+            bottom: -10px;
+            font-size: 90px;
+            opacity: 0.06;
+        }
+
+        .btn-offer {
+            padding: 11px 22px;
+            background: var(--g);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-offer:hover {
+            background: var(--g2);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-up {
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        <!-- SPLASH -->
+        <section class="screen active" id="s-splash">
+            <div class="splash-bg"></div>
+            <div class="splash-orb orb1"></div>
+            <div class="splash-orb orb2"></div>
+            <div class="splash-top">
+                <div class="splash-logo">PULSE<span>.ai</span></div>
+                <div class="splash-tag">Your Intelligent Financial Companion</div>
+                <div class="splash-card fade-up delay-1">
+                    <div class="splash-stat-row">
+                        <div class="splash-stat">
+                            <div class="splash-stat-val">₦1.2M</div>
+                            <div class="splash-stat-lbl">Avg. tracked</div>
+                        </div>
+                        <div class="splash-stat">
+                            <div class="splash-stat-val">7</div>
+                            <div class="splash-stat-lbl">Subs detected</div>
+                        </div>
+                        <div class="splash-stat">
+                            <div class="splash-stat-val">40%</div>
+                            <div class="splash-stat-lbl">Savings rate</div>
+                        </div>
+                    </div>
+                    <div class="splash-mini-bars">
+                        <div class="mini-bar-row"><span class="mini-bar-label">Food</span>
+                            <div class="mini-bar-track">
+                                <div class="mini-bar-fill" style="width:72%;"></div>
+                            </div>
+                        </div>
+                        <div class="mini-bar-row"><span class="mini-bar-label">Transport</span>
+                            <div class="mini-bar-track">
+                                <div class="mini-bar-fill" style="width:45%;background:var(--amber);"></div>
+                            </div>
+                        </div>
+                        <div class="mini-bar-row"><span class="mini-bar-label">Subscriptions</span>
+                            <div class="mini-bar-track">
+                                <div class="mini-bar-fill" style="width:28%;background:var(--blue);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="splash-bottom">
+                <button class="btn-primary" onclick="go('s-signup')">Get Started →</button>
+                <div class="splash-powered">Powered by Wema Bank · Open Banking</div>
+            </div>
+        </section>
+
+        <!-- SIGN UP -->
+        <section class="screen" id="s-signup">
+            <div class="signup-top">
+                <button class="back-btn" onclick="go('s-splash')">←</button>
+                <div class="screen-title">Secure<br>Access.</div>
+                <div class="screen-sub">Sign in to sync your financial data across all your banks. Your data is
+                    encrypted and never sold.</div>
+                <button class="google-btn" onclick="go('s-connect')">
+                    <div class="g-dot"></div>
+                    Continue with Google
+                </button>
+                <div class="divider-line"><span>or</span></div>
+                <button class="google-btn" style="opacity:0.5;pointer-events:none;">
+                    <span style="font-size:18px;">📱</span>
+                    Continue with Phone Number
+                </button>
+            </div>
+            <div class="privacy-note">
+                By continuing you agree to Wema Bank's <a href="#">Open Banking Privacy Policy</a> and consent to
+                transaction data aggregation.
+            </div>
+        </section>
+
+        <!-- CONNECT BANKS -->
+        <section class="screen" id="s-connect">
+            <div class="connect-inner">
+                <button class="back-btn" onclick="go('s-signup')">←</button>
+                <div class="step-pill">
+                    <div class="step-dot"></div> Step 2 of 2 — Link Accounts
+                </div>
+                <div class="screen-title" style="font-size:24px;">Open Banking<br>Sync</div>
+                <div class="screen-sub" style="margin-bottom:0;">Select accounts to aggregate. You control what Pulse
+                    can see.</div>
+                <div class="bank-list">
+                    <div class="bank-row selected" onclick="toggleBank(this)">
+                        <div class="bank-row-left">
+                            <div class="bank-avatar" style="background:rgba(255,102,0,0.15);color:#FF6600;">GT</div>
+                            <span class="bank-name">GTBank</span>
+                        </div>
+                        <div class="bank-check"><span class="bank-check-icon">✓</span></div>
+                    </div>
+                    <div class="bank-row selected" onclick="toggleBank(this)">
+                        <div class="bank-row-left">
+                            <div class="bank-avatar" style="background:rgba(80,80,200,0.15);color:#5050CC;">Ku</div>
+                            <span class="bank-name">Kuda Bank</span>
+                        </div>
+                        <div class="bank-check"><span class="bank-check-icon">✓</span></div>
+                    </div>
+                    <div class="bank-row" onclick="toggleBank(this)">
+                        <div class="bank-row-left">
+                            <div class="bank-avatar" style="background:rgba(200,30,30,0.15);color:#C41E1E;">Ze</div>
+                            <span class="bank-name">Zenith Bank</span>
+                        </div>
+                        <div class="bank-check"><span class="bank-check-icon">✓</span></div>
+                    </div>
+                    <div class="bank-row" onclick="toggleBank(this)">
+                        <div class="bank-row-left">
+                            <div class="bank-avatar" style="background:rgba(0,80,180,0.15);color:#0050B4;">Ac</div>
+                            <span class="bank-name">Access Bank</span>
+                        </div>
+                        <div class="bank-check"><span class="bank-check-icon">✓</span></div>
+                    </div>
+                </div>
+                <div class="consent-note">🔒 <strong>CBN-compliant consent.</strong> Pulse reads transaction history
+                    only. It cannot initiate transfers or payments on your behalf.</div>
+                <button class="btn-primary" onclick="startLoading()">Authorise & Aggregate →</button>
+            </div>
+        </section>
+
+        <!-- LOADING -->
+        <section class="screen" id="s-loading">
+            <div class="pulse-ring"></div>
+            <div class="loading-label">Analysing Patterns</div>
+            <div class="loading-sub">Aggregating open banking data<br>from your linked accounts.</div>
+            <div class="loading-steps">
+                <div class="loading-step" id="lstep-1">
+                    <div class="step-icon">⟳</div> Fetching transaction history
+                </div>
+                <div class="loading-step" id="lstep-2">
+                    <div class="step-icon">⟳</div> Detecting subscriptions
+                </div>
+                <div class="loading-step" id="lstep-3">
+                    <div class="step-icon">⟳</div> Building spending model
+                </div>
+                <div class="loading-step" id="lstep-4">
+                    <div class="step-icon">⟳</div> Generating your persona
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD -->
+        <section class="screen" id="s-dashboard">
+            <div class="dash-header">
+                <div class="dash-top-row">
+                    <div>
+                        <div class="dash-greeting">Good morning,</div>
+                        <div class="dash-name">Santan Dave</div>
+                    </div>
+                    <button class="notif-btn">🔔</button>
+                </div>
+                <div class="balance-block">
+                    <div class="bal-label">Total balance (all accounts)</div>
+                    <div class="bal-amount">₦1,247,500</div>
+                    <div class="bal-sub">Wema · GTBank · Kuda · via Open Banking</div>
+                    <div class="bal-row">
+                        <div>
+                            <div class="bal-item-label">Income</div>
+                            <div class="bal-item-val pos">₦520,000</div>
+                        </div>
+                        <div>
+                            <div class="bal-item-label">Spent</div>
+                            <div class="bal-item-val neg">₦311,240</div>
+                        </div>
+                        <div>
+                            <div class="bal-item-label">Saved</div>
+                            <div class="bal-item-val pos">40.1%</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dash-tabs">
+                    <button class="dash-tab active" onclick="switchTab('overview', this)">Overview</button>
+                    <button class="dash-tab" onclick="switchTab('budget', this)">Budget</button>
+                    <button class="dash-tab" onclick="switchTab('expenses', this)">Expenses</button>
+                    <button class="dash-tab" onclick="switchTab('subscriptions', this)">Subscriptions</button>
+                    <button class="dash-tab" onclick="switchTab('stats', this)">Stats</button>
+                </div>
+            </div>
+            <div class="dash-body">
+
+                <!-- OVERVIEW TAB -->
+                <div class="tab-content active" id="tab-overview">
+
+                    <div class="ai-strip fade-up">
+                        <div class="ai-pulse">✦</div>
+                        <div class="ai-text">
+                            <strong>AI insight:</strong>
+                            You're on track to exceed your food budget by ₦15,000 this month.
+                        </div>
+                    </div>
+
+                    <div class="stats-grid fade-up delay-2">
+                        <div class="stat-card">
+                            <div class="stat-lbl">Spent this month</div>
+                            <div class="stat-val">₦311k</div>
+                            <div class="stat-bar">
+                                <div class="stat-bar-fill" style="width:60%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card dark" onclick="go('s-persona')">
+                            <div class="stat-lbl">Your Persona</div>
+                            <div class="stat-val" style="font-size:13px;margin-top:2px;">
+                                The Steady<br>Builder 🎯
+                            </div>
+                            <div class="persona-hint">Tap to explore →</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- BUDGET TAB -->
+                <div class="tab-content" id="tab-budget">
+
+                    <div class="section-label">Monthly Budgets</div>
+
+                    <div class="dash-card">
+                        <div class="sub-row">
+                            <div class="sub-info">
+                                <div class="sub-name">Food & Dining</div>
+                                <div class="sub-meta">₦85,000 / ₦100,000 used</div>
+                            </div>
+                            <div class="sub-amt">85%</div>
+                        </div>
+
+                        <div class="sub-row">
+                            <div class="sub-info">
+                                <div class="sub-name">Transport</div>
+                                <div class="sub-meta">₦25,000 / ₦40,000 used</div>
+                            </div>
+                            <div class="sub-amt">62%</div>
+                        </div>
+
+                        <div class="sub-row">
+                            <div class="sub-info">
+                                <div class="sub-name">Entertainment</div>
+                                <div class="sub-meta">₦19,000 / ₦25,000 used</div>
+                            </div>
+                            <div class="sub-amt">76%</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- EXPENSES TAB -->
+                <div class="tab-content" id="tab-expenses">
+
+                    <div class="section-label">Recent Expenses</div>
+
+                    <div class="dash-card">
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#FEF3C7;">🍔</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Chicken Republic</div>
+                                <div class="txn-cat">Food</div>
+                            </div>
+                            <div class="txn-amt d">-₦8,400</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#FEE2E2;">🎁</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Gift Transfer</div>
+                                <div class="txn-cat">Personal • Today, 10:14 AM</div>
+                            </div>
+                            <div class="txn-amt d">-₦12,000</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#FED7AA;">⛽</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Fuel Purchase</div>
+                                <div class="txn-cat">Energy • Yesterday</div>
+                            </div>
+                            <div class="txn-amt d">-₦35,000</div>
+                        </div>
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#E0E7FF;">📺</div>
+                            <div class="txn-info">
+                                <div class="txn-name">LG Smart TV</div>
+                                <div class="txn-cat">Appliances • Electronics</div>
+                            </div>
+                            <div class="txn-amt d">-₦450,500</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#DCFCE7;">🛵</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Glovo</div>
+                                <div class="txn-cat">Food Delivery • Yesterday</div>
+                            </div>
+                            <div class="txn-amt d">-₦12,400</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#FEF3C7;">🍔</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Chowdeck</div>
+                                <div class="txn-cat">Food</div>
+                            </div>
+                            <div class="txn-amt d">-₦3,300</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#E0F2FE;">🚘</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Bolt Ride</div>
+                                <div class="txn-cat">Transport • Lekki Route</div>
+                            </div>
+                            <div class="txn-amt d">-₦18,400</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#FEF3C7;">🍔</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Chicken Republic</div>
+                                <div class="txn-cat">Food</div>
+                            </div>
+                            <div class="txn-amt d">-₦8,400</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#E0F2FE;">🚕</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Uber Trip</div>
+                                <div class="txn-cat">Transport</div>
+                            </div>
+                            <div class="txn-amt d">-₦6,200</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#DCFCE7;">🛍️</div>
+                            <div class="txn-info">
+                                <div class="txn-name">Jumia Order</div>
+                                <div class="txn-cat">Shopping</div>
+                            </div>
+                            <div class="txn-amt d">-₦22,000</div>
+                        </div>
+
+                        <div class="txn-row">
+                            <div class="txn-icon" style="background:#FCE7F3;">📱</div>
+                            <div class="txn-info">
+                                <div class="txn-name">MTN Data</div>
+                                <div class="txn-cat">Bills</div>
+                            </div>
+                            <div class="txn-amt d">-₦5,000</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- SUBSCRIPTIONS TAB -->
+                <div class="tab-content" id="tab-subscriptions">
+
+                    <div class="section-label">
+                        Active Subscriptions
+                    </div>
+
+                    <div class="dash-card">
+
+                        <div class="sub-row">
+                            <div class="sub-icon" style="background:#FEE2E2;">🎬</div>
+
+                            <div class="sub-info">
+                                <div class="sub-name">Netflix</div>
+                                <div class="sub-meta">Monthly · ₦4,200</div>
+                                <div class="cancel-link">Cancel from GTBank recurring payments</div>
+                            </div>
+                        </div>
+
+                        <div class="sub-row">
+                            <div class="sub-icon" style="background:#DCFCE7;">🎵</div>
+
+                            <div class="sub-info">
+                                <div class="sub-name">Spotify Premium</div>
+                                <div class="sub-meta">Monthly · ₦2,900</div>
+                                <div class="cancel-link">Cancel from Apple App Store subscriptions</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="section-label">
+                        Inactive Subscriptions
+                    </div>
+
+                    <div class="dash-card">
+
+                        <div class="sub-row">
+                            <div class="sub-icon" style="background:#E5E7EB;">📺</div>
+
+                            <div class="sub-info">
+                                <div class="sub-name">Showmax</div>
+                                <div class="sub-meta">Cancelled 2 months ago</div>
+                                <div class="expense-badge">No active billing</div>
+                            </div>
+                        </div>
+
+                        <div class="sub-row">
+                            <div class="sub-icon" style="background:#E5E7EB;">☁️</div>
+
+                            <div class="sub-info">
+                                <div class="sub-name">iCloud+</div>
+                                <div class="sub-meta">Expired subscription</div>
+                                <div class="expense-badge">Inactive</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- STATS TAB -->
+                <div class="tab-content" id="tab-stats">
+
+                    <div class="section-label">Spending Statistics</div>
+
+                    <div class="stats-grid">
+
+                        <div class="stat-card">
+                            <div class="stat-lbl">Highest Spending</div>
+                            <div class="stat-val">Food</div>
+                            <div class="stat-bar">
+                                <div class="stat-bar-fill" style="width:82%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-lbl">Subscription Spend</div>
+                            <div class="stat-val">₦16.9k</div>
+                            <div class="stat-bar">
+                                <div class="stat-bar-fill" style="width:48%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-lbl">Savings Rate</div>
+                            <div class="stat-val">40%</div>
+                            <div class="stat-bar">
+                                <div class="stat-bar-fill" style="width:40%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-lbl">Transactions</div>
+                            <div class="stat-val">128</div>
+                            <div class="stat-bar">
+                                <div class="stat-bar-fill" style="width:76%;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item active"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span>
+                </div>
+                <div class="nav-item" onclick="go('s-crosssell')"><span class="nav-icon">✦</span><span>Offers</span>
+                </div>
+                <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
+            </div>
+        </section>
+
+        <!-- PERSONA -->
+        <section class="screen" id="s-persona">
+            <div class="persona-inner">
+                <button class="back-btn" onclick="go('s-dashboard')">←</button>
+                <div class="section-label" style="color:#fff;margin-bottom:14px;">Your Spending Persona</div>
+                <div class="persona-hero">
+                    <div class="persona-emoji">🎯</div>
+                    <div class="persona-title">The Steady Builder</div>
+                    <div class="persona-desc">You earn consistently, save above average, but let subscriptions and
+                        convenience spending creep up quietly.</div>
+                </div>
+                <div class="trait-grid">
+                    <div class="trait-card">
+                        <div class="trait-score" style="color:#7FE4A8;">82</div>
+                        <div class="trait-name">Savings discipline</div>
+                        <div class="trait-ring">
+                            <div class="trait-ring-fill" style="width:82%;background:#7FE4A8;"></div>
+                        </div>
+                    </div>
+                    <div class="trait-card">
+                        <div class="trait-score" style="color:#FCD34D;">54</div>
+                        <div class="trait-name">Spending control</div>
+                        <div class="trait-ring">
+                            <div class="trait-ring-fill" style="width:54%;background:#FCD34D;"></div>
+                        </div>
+                    </div>
+                    <div class="trait-card">
+                        <div class="trait-score" style="color:#93C5FD;">71</div>
+                        <div class="trait-name">Bill punctuality</div>
+                        <div class="trait-ring">
+                            <div class="trait-ring-fill" style="width:71%;background:#93C5FD;"></div>
+                        </div>
+                    </div>
+                    <div class="trait-card">
+                        <div class="trait-score" style="color:#FCA5A5;">38</div>
+                        <div class="trait-name">Sub efficiency</div>
+                        <div class="trait-ring">
+                            <div class="trait-ring-fill" style="width:38%;background:#FCA5A5;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-tag">Pattern detected</div>
+                    <div class="insight-body">You pay for Netflix (₦4,200) and DStv (₦9,800) simultaneously. Based on
+                        usage patterns, cancelling DStv saves ₦117,600/year.</div>
+                </div>
+                <div class="insight-card" style="border-color:rgba(93,165,255,0.2);background:rgba(26,95,171,0.08);">
+                    <div class="insight-tag" style="color:#93C5FD;">Credit signal</div>
+                    <div class="insight-body">Your savings rate and income consistency qualify you for a strong credit
+                        profile with Wema Bank.</div>
+                </div>
+                <button class="btn-outline-green" onclick="go('s-crosssell')">See Recommendations →</button>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="go('s-dashboard')"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item active"><span class="nav-icon">◎</span><span>Persona</span></div>
+                <div class="nav-item" onclick="go('s-crosssell')"><span class="nav-icon">✦</span><span>Offers</span>
+                </div>
+                <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
+            </div>
+        </section>
+
+        <!-- CROSS-SELL -->
+        <section class="screen" id="s-crosssell">
+            <div class="crosssell-inner">
+                <button class="back-btn" onclick="go('s-persona')"
+                    style="background:rgba(0,0,0,0.06);color:#5C7066;">←</button>
+                <div class="section-label" style="margin-bottom:16px;">Wema Offers for You</div>
+                <div class="offer-card invest">
+                    <span class="offer-badge green">Invest</span>
+                    <div class="offer-title">Fixed Deposit</div>
+                    <div class="offer-desc">Move ₦150,000 from your savings into a Wema Fixed Deposit.</div>
+                    <div class="offer-stat"><span>Returns</span><span class="offer-stat-val">+₦27,000/yr</span><span
+                            style="font-size:10px;color:rgba(255,255,255,0.3);">at 18% p.a.</span></div>
+                    <br>
+                    <button class="btn-offer">Start Now →</button>
+                    <div class="offer-bg-icon">💎</div>
+                </div>
+                <div class="offer-card credit">
+                    <span class="offer-badge blue">Credit</span>
+                    <div class="offer-title">ALAT Salary Loan</div>
+                    <div class="offer-desc">Your Pulse persona qualifies you for an instant credit line — no paperwork.
+                    </div>
+                    <div class="offer-stat"><span>Pre-approved</span><span class="offer-stat-val">₦500,000</span></div>
+                    <br>
+                    <button class="btn-offer" style="background:var(--blue);">Apply Now →</button>
+                    <div class="offer-bg-icon">💳</div>
+                </div>
+                <div class="offer-card"
+                    style="background:rgba(0,132,61,0.08);border:1px solid rgba(0,132,61,0.15);border-radius:22px;padding:18px;">
+                    <span class="offer-badge green">Mutual Fund</span>
+                    <div class="offer-title" style="font-size:17px;">Wema Growth Fund</div>
+                    <div class="offer-desc">Auto-invest ₦50,000 on salary day. Set it once.</div>
+                    <button class="btn-offer">Explore →</button>
+                </div>
+            </div>
+            <div class="bottom-nav" style="background:#fff;">
+                <div class="nav-item" onclick="go('s-dashboard')"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span>
+                </div>
+                <div class="nav-item active"><span class="nav-icon">✦</span><span>Offers</span></div>
+                <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
+            </div>
+        </section>
+
+    </div>
+    <script>
+        let current = 's-splash';
+        function go(id) {
+            const prev = document.getElementById(current);
+            const next = document.getElementById(id);
+            if (!next || id === current) return;
+            prev.classList.add('exit');
+            setTimeout(() => { prev.classList.remove('active', 'exit'); }, 380);
+            next.classList.add('active');
+            current = id;
+            next.scrollTop = 0;
+        }
+        function toggleBank(el) { el.classList.toggle('selected'); }
+        function switchTab(tab, el) {
+
+            document.querySelectorAll('.dash-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            el.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(tabContent => {
+                tabContent.classList.remove('active');
+            });
+
+            document.getElementById(`tab-${tab}`).classList.add('active');
+        }
+        function startLoading() {
+            go('s-loading');
+            ['lstep-1', 'lstep-2', 'lstep-3', 'lstep-4'].forEach((id, i) => {
+                setTimeout(() => {
+                    const el = document.getElementById(id);
+                    el.classList.add('done');
+                    el.querySelector('.step-icon').textContent = '✓';
+                }, 500 + i * 550);
+            });
+            setTimeout(() => go('s-dashboard'), 3200);
+        }
+    </script>
+</body>
+
+</html>

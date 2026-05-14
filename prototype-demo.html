@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financial Intelligence Prototype</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: #f3f6fb;
+      color: #102a43;
+    }
+    .app {
+      max-width: 420px;
+      margin: 24px auto;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 80px rgba(16, 42, 67, 0.512);
+      background: white;
+    }
+    .screen {
+      min-height: 760px;
+      padding: 28px;
+      display: none;
+    }
+    .screen.active {
+      display: block;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: #52606d;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .card {
+      background: #f8fbff;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: inset 0 0 0 1px rgba(16, 42, 67, 0.05);
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
+      background: #3b82f6;
+      color: white;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+    .bank-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .bank-tile {
+      background: #ffffff;
+      border: 1px solid #dde7f2;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      font-weight: 700;
+    }
+    .metric-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .metric {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 12px 30px rgba(16, 42, 67, 0.06);
+    }
+    .metric-label {
+      color: #627d98;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .metric-value {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #e9eff8;
+    }
+    .list-item:last-child {
+      border-bottom: none;
+    }
+    .tag {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .bottom-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .nav-button {
+      flex: 1;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid #dfe7f5;
+      background: #ffffff;
+      color: #102a43;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .nav-button.disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+    .score-card {
+      display: grid;
+      gap: 14px;
+    }
+    .score-big {
+      font-size: 56px;
+      font-weight: 800;
+      margin: 0;
+      color: #1d4ed8;
+    }
+    .score-label {
+      color: #475569;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div id="screen1" class="screen active">
+      <div class="header">
+        <div>
+          <p class="title">Wema Financial Intelligence</p>
+          <p class="subtitle">See your money across banks, apps, and subscriptions.</p>
+        </div>
+      </div>
+      <div class="card">
+        <p style="font-weight:700; margin:0 0 12px;">Connect your accounts</p>
+        <p style="margin:0 0 16px; color:#52606d;">Secure Open Banking connection with customer consent.</p>
+        <div class="bank-grid">
+          <div class="bank-tile">Wema</div>
+          <div class="bank-tile">GTBank</div>
+          <div class="bank-tile">Kuda</div>
+          <div class="bank-tile">Opay</div>
+          <div class="bank-tile">PalmPay</div>
+        </div>
+        <button class="button" onclick="goTo(2)">Connect accounts</button>
+      </div>
+    </div>
+
+    <div id="screen2" class="screen">
+      <div class="header">
+        <div>
+          <p class="title">Dashboard</p>
+          <p class="subtitle">Unified view of balance, income, and spending.</p>
+        </div>
+      </div>
+      <div class="card">
+        <p style="margin:0; color:#627d98;">Total balance</p>
+        <p style="font-size:34px; font-weight:800; margin: 8px 0 0;">₦1,254,000</p>
+      </div>
+      <div class="metric-row">
+        <div class="metric">
+          <p class="metric-label">Monthly income</p>
+          <p class="metric-value">₦368,000</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Spent this month</p>
+          <p class="metric-value">₦148,500</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 16px;">
+        <p style="font-weight:700; margin:0 0 14px;">Spending categories</p>
+        <div class="list-item"><span>Food & Delivery</span><span>₦48,900</span></div>
+        <div class="list-item"><span>Transport</span><span>₦41,200</span></div>
+        <div class="list-item"><span>Bills & Subscriptions</span><span>₦37,400</span></div>
+        <div class="list-item"><span>Savings</span><span>₦20,500</span></div>
+      </div>
+      <div class="bottom-nav">
+        <button class="nav-button" onclick="goTo(1)">Back</button>
+        <button class="nav-button" onclick="goTo(3)">Next</button>
+      </div>
+    </div>
+
+    <div id="screen3" class="screen">
+      <div class="header">
+        <div>
+          <p class="title">Active subscriptions</p>
+          <p class="subtitle">AI detected recurring payments across your accounts.</p>
+        </div>
+      </div>
+      <div class="card">
+        <p style="font-weight:700; margin:0 0 12px;">Monthly total</p>
+        <p style="font-size:28px; font-weight:800; margin:0;">₦29,500</p>
+      </div>
+      <div class="card">
+        <div class="list-item"><span>Netflix</span><strong>₦7,500</strong></div>
+        <div class="list-item"><span>Spotify NG</span><strong>₦6,200</strong></div>
+        <div class="list-item"><span>GOtv Renewal</span><strong>₦4,500</strong></div>
+        <div class="list-item"><span>Apple Services</span><strong>₦5,200</strong></div>
+        <div class="list-item"><span>ChatGPT Subscription</span><strong>₦2,500</strong></div>
+      </div>
+      <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <p style="margin:0; font-weight:700;">5 subscriptions detected</p>
+          <p style="margin:6px 0 0; color:#52606d;">Across 3 connected accounts</p>
+        </div>
+        <span class="tag">Review</span>
+      </div>
+      <div class="bottom-nav">
+        <button class="nav-button" onclick="goTo(2)">Back</button>
+        <button class="nav-button" onclick="goTo(4)">Next</button>
+      </div>
+    </div>
+
+    <div id="screen4" class="screen">
+      <div class="header">
+        <div>
+          <p class="title">Spending Persona</p>
+          <p class="subtitle">The AI explains your financial behavior.</p>
+        </div>
+      </div>
+      <div class="card">
+        <p style="font-weight:700; margin:0 0 10px;">Lifestyle Convenience Spender</p>
+        <p style="margin:0; color:#52606d;">High transport and food spending with inconsistent savings patterns.</p>
+      </div>
+      <div class="metric-row" style="margin-top:16px;">
+        <div class="metric">
+          <p class="metric-label">Transport share</p>
+          <p class="metric-value">40%</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Savings rate</p>
+          <p class="metric-value">12%</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <p style="font-weight:700; margin:0 0 12px;">Behavior highlights</p>
+        <div class="list-item"><span>Frequent ride-hailing</span><span>High</span></div>
+        <div class="list-item"><span>Late-month balance dips</span><span>Yes</span></div>
+        <div class="list-item"><span>Recurring subscriptions</span><span>5</span></div>
+      </div>
+      <div class="bottom-nav">
+        <button class="nav-button" onclick="goTo(3)">Back</button>
+        <button class="nav-button" onclick="goTo(5)">Next</button>
+      </div>
+    </div>
+
+    <div id="screen5" class="screen">
+      <div class="header">
+        <div>
+          <p class="title">Smart Money Advice</p>
+          <p class="subtitle">Actionable recommendations for better savings.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="list-item"><span>Reduce ride-hailing spend</span><span>₦12,000</span></div>
+        <div class="list-item"><span>Trim subscriptions</span><span>₦8,500</span></div>
+        <div class="list-item"><span>Auto-save rule</span><span>₦10,000/week</span></div>
+        <div class="list-item"><span>Emergency savings</span><span>Recommend</span></div>
+      </div>
+      <button class="button" onclick="goTo(6)">Apply savings plan</button>
+      <div class="bottom-nav">
+        <button class="nav-button" onclick="goTo(4)">Back</button>
+        <button class="nav-button" onclick="goTo(6)">Next</button>
+      </div>
+    </div>
+
+    <div id="screen6" class="screen">
+      <div class="header">
+        <div>
+          <p class="title">Credit Intelligence</p>
+          <p class="subtitle">Behavioral score and loan eligibility insights.</p>
+        </div>
+      </div>
+      <div class="card score-card">
+        <p class="score-label">Financial Consistency Score</p>
+        <p class="score-big">78</p>
+        <p style="margin:0; color:#52606d;">Stable income, moderate spending volatility.</p>
+      </div>
+      <div class="card">
+        <div class="list-item"><span>Pre-approved microloan</span><strong>Available</strong></div>
+        <div class="list-item"><span>Low-risk savings portfolio</span><strong>Recommended</strong></div>
+      </div>
+      <div class="bottom-nav">
+        <button class="nav-button" onclick="goTo(5)">Back</button>
+        <button class="nav-button disabled">Finish</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goTo(screen) {
+      const screens = document.querySelectorAll('.screen');
+      screens.forEach((el) => el.classList.remove('active'));
+      const next = document.getElementById('screen' + screen);
+      if (next) next.classList.add('active');
+    }
+  </script>
+</body>
+</html>
