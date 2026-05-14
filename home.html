@@ -731,46 +731,6 @@
             color: #FFAAAA;
         }
 
-        .dash-tabs {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding: 10px 18px;
-            justify-content: center;
-            background: rgba(10, 21, 16, 0.94);
-            backdrop-filter: blur(14px);
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .dash-tabs::-webkit-scrollbar {
-            display: none;
-        }
-
-        .dash-tab {
-            white-space: nowrap;
-            padding: 7px 16px;
-            border-radius: 99px;
-            font-size: 12px;
-            border: none;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.2s;
-        }
-
-        .dash-tab.active {
-            background: var(--g);
-            color: #fff;
-            font-weight: 500;
-        }
-
-        .dash-tab:not(.active) {
-            background: rgba(255, 255, 255, 0.07);
-            color: rgba(255, 255, 255, 0.45);
-        }
-
         .dash-body {
             padding: 16px 18px 100px;
         }
@@ -1406,7 +1366,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 32px;
+            gap: 14px;
             border-top: 1px solid rgba(0, 0, 0, 0.06);
             z-index: 10;
         }
@@ -1417,7 +1377,7 @@
             align-items: center;
             gap: 3px;
             cursor: pointer;
-            padding: 4px 14px;
+            padding: 4px 7px;
             font-size: 9px;
             color: var(--muted);
             transition: color 0.2s;
@@ -1720,6 +1680,86 @@
         #s-persona {
             background: var(--dark);
             padding: 0;
+        }
+
+        #s-tools {
+            background: var(--surface);
+            padding: 0;
+        }
+
+        .tools-inner {
+            padding: 52px 20px 100px;
+            flex: 1;
+        }
+
+        .tools-hero {
+            background: var(--dark);
+            color: #fff;
+            border-radius: 22px;
+            padding: 22px;
+            margin-bottom: 14px;
+        }
+
+        .tools-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            margin-bottom: 6px;
+        }
+
+        .tools-sub {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.48);
+            line-height: 1.55;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tool-card {
+            background: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: 16px;
+            padding: 14px;
+            min-height: 132px;
+            cursor: pointer;
+            transition: transform 0.15s, border-color 0.2s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-1px);
+            border-color: rgba(0, 132, 61, 0.2);
+        }
+
+        .tool-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 132, 61, 0.1);
+            color: var(--g);
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .tool-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            color: #1A2B1F;
+            margin-bottom: 5px;
+        }
+
+        .tool-copy {
+            font-size: 11px;
+            line-height: 1.45;
+            color: var(--muted);
         }
 
         .persona-inner {
@@ -2215,13 +2255,6 @@
                     </div>
                 </div>
             </div>
-            <div class="dash-tabs">
-                <button class="dash-tab active" onclick="switchTab('overview', this)">Overview</button>
-                <button class="dash-tab" onclick="switchTab('budget', this)">Budget</button>
-                <button class="dash-tab" onclick="switchTab('expenses', this)">Expenses</button>
-                <button class="dash-tab" onclick="switchTab('subscriptions', this)">Subscriptions</button>
-                <button class="dash-tab" onclick="switchTab('stats', this)">Stats</button>
-            </div>
             <div class="dash-body">
 
                 <!-- OVERVIEW TAB -->
@@ -2517,9 +2550,10 @@
 
             </div>
             <div class="bottom-nav">
-                <div class="nav-item active"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item active" onclick="openOverview()"><span class="nav-icon">⊞</span><span>Home</span></div>
                 <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span>
                 </div>
+                <div class="nav-item" onclick="go('s-tools')"><span class="nav-icon">▦</span><span>Tools</span></div>
                 <div class="nav-item" onclick="go('s-crosssell')"><span class="nav-icon">✦</span><span>Offers</span>
                 </div>
                 <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
@@ -2570,10 +2604,51 @@
                 <button class="btn-outline-green" onclick="go('s-crosssell')">See Recommendations →</button>
             </div>
             <div class="bottom-nav">
-                <div class="nav-item" onclick="go('s-dashboard')"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item" onclick="openOverview()"><span class="nav-icon">⊞</span><span>Home</span></div>
                 <div class="nav-item active"><span class="nav-icon">◎</span><span>Persona</span></div>
+                <div class="nav-item" onclick="go('s-tools')"><span class="nav-icon">▦</span><span>Tools</span></div>
                 <div class="nav-item" onclick="go('s-crosssell')"><span class="nav-icon">✦</span><span>Offers</span>
                 </div>
+                <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
+            </div>
+        </section>
+
+        <!-- TOOLS -->
+        <section class="screen" id="s-tools">
+            <div class="tools-inner">
+                <button class="back-btn" onclick="openOverview()" style="background:rgba(0,0,0,0.06);color:#5C7066;">←</button>
+                <div class="tools-hero">
+                    <div class="tools-title">Financial Tools</div>
+                    <div class="tools-sub">Budget, expenses, subscriptions, and stats are grouped here so the overview stays focused after login.</div>
+                </div>
+                <div class="tool-grid">
+                    <div class="tool-card" onclick="openTool('budget')" role="button" tabindex="0">
+                        <div class="tool-icon">◔</div>
+                        <div class="tool-name">Budget</div>
+                        <div class="tool-copy">Track income, expenses, remaining budget, and category limits.</div>
+                    </div>
+                    <div class="tool-card" onclick="openTool('expenses')" role="button" tabindex="0">
+                        <div class="tool-icon">≡</div>
+                        <div class="tool-name">Expenses</div>
+                        <div class="tool-copy">Review dated spending activity across linked banks.</div>
+                    </div>
+                    <div class="tool-card" onclick="openTool('subscriptions')" role="button" tabindex="0">
+                        <div class="tool-icon">↻</div>
+                        <div class="tool-name">Subscriptions</div>
+                        <div class="tool-copy">Filter renewals, payment sources, and cancellation guidance.</div>
+                    </div>
+                    <div class="tool-card" onclick="openTool('stats')" role="button" tabindex="0">
+                        <div class="tool-icon">▥</div>
+                        <div class="tool-name">Stats</div>
+                        <div class="tool-copy">See spending trends, category pressure, and savings signals.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="openOverview()"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span></div>
+                <div class="nav-item active"><span class="nav-icon">▦</span><span>Tools</span></div>
+                <div class="nav-item" onclick="go('s-crosssell')"><span class="nav-icon">✦</span><span>Offers</span></div>
                 <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
             </div>
         </section>
@@ -2613,9 +2688,10 @@
                 </div>
             </div>
             <div class="bottom-nav" style="background:#fff;">
-                <div class="nav-item" onclick="go('s-dashboard')"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item" onclick="openOverview()"><span class="nav-icon">⊞</span><span>Home</span></div>
                 <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span>
                 </div>
+                <div class="nav-item" onclick="go('s-tools')"><span class="nav-icon">▦</span><span>Tools</span></div>
                 <div class="nav-item active"><span class="nav-icon">✦</span><span>Offers</span></div>
                 <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
             </div>
@@ -3311,24 +3387,26 @@
         function toggleBank(el) { el.classList.toggle('selected'); }
         function switchTab(tab, el) {
 
-            document.querySelectorAll('.dash-tab').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            if (el) el.classList.add('active');
-
             document.querySelectorAll('.tab-content').forEach(tabContent => {
                 tabContent.classList.remove('active');
             });
 
-            document.getElementById(`tab-${tab}`).classList.add('active');
+            const targetTab = document.getElementById(`tab-${tab}`);
+            if (targetTab) targetTab.classList.add('active');
         }
 
         function switchTabByName(tab) {
-            const tabButton = Array.from(document.querySelectorAll('.dash-tab')).find(button =>
-                button.getAttribute('onclick') && button.getAttribute('onclick').includes(`'${tab}'`)
-            );
-            switchTab(tab, tabButton);
+            switchTab(tab);
+        }
+
+        function openOverview() {
+            switchTabByName('overview');
+            go('s-dashboard');
+        }
+
+        function openTool(tab) {
+            switchTabByName(tab);
+            go('s-dashboard');
         }
 
         function startLoading() {
