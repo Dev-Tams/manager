@@ -1064,6 +1064,42 @@
             padding-bottom: 14px;
         }
 
+        .tool-back-row {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .tool-back-row.visible {
+            display: flex;
+        }
+
+        .tool-back-btn {
+            border: none;
+            border-radius: 11px;
+            background: rgba(0, 132, 61, 0.1);
+            color: var(--g);
+            width: 38px;
+            height: 38px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .tool-back-title {
+            flex: 1;
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: #1A2B1F;
+        }
+
+        .budget-total-pie {
+            background: conic-gradient(var(--g) 0deg 281deg, #E5E7EB 281deg 360deg);
+        }
+
         .budget-period-toggle {
             display: inline-flex;
             gap: 4px;
@@ -1131,7 +1167,7 @@
         .budget-pie-value {
             font-family: 'Syne', sans-serif;
             font-size: 18px;
-            font-weight: 800;
+            font-weight: 400;
             color: #1A2B1F;
             line-height: 1;
         }
@@ -1597,6 +1633,29 @@
             max-width: 34px;
             border-radius: 9px 9px 3px 3px;
             background: linear-gradient(180deg, var(--g2), var(--g));
+            cursor: pointer;
+            transition: filter 0.2s, transform 0.15s;
+        }
+
+        .stats-bar-fill:hover,
+        .stats-bar-fill.active {
+            filter: brightness(0.95);
+            transform: translateY(-2px);
+        }
+
+        .stats-selected {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 12px;
+            background: rgba(0, 132, 61, 0.08);
+            color: var(--g);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .stats-selected.visible {
+            display: block;
         }
 
         .ai-risk-label {
@@ -2165,7 +2224,7 @@
             <div class="splash-orb orb1"></div>
             <div class="splash-orb orb2"></div>
             <div class="splash-top">
-                <div class="splash-logo">PULSE<span>.ai</span></div>
+                <div class="splash-logo">PULSE</div>
                 <div class="splash-tag">Your Intelligent Financial Companion</div>
                 <div class="splash-card fade-up delay-1">
                     <div class="splash-stat-row">
@@ -2243,28 +2302,28 @@
                 <div class="bank-list">
                     <div class="bank-row selected" onclick="toggleBank(this)">
                         <div class="bank-row-left">
-                            <div class="bank-avatar" style="background:rgba(255,102,0,0.15);color:#FF6600;">GT</div>
+                            <div class="bank-avatar" style="background:rgba(255,102,0,0.15);color:#FF6600;">WM</div>
                             <span class="bank-name">WEMA</span>
                         </div>
                         <div class="bank-check"><span class="bank-check-icon">✓</span></div>
                     </div>
                     <div class="bank-row selected" onclick="toggleBank(this)">
                         <div class="bank-row-left">
-                            <div class="bank-avatar" style="background:rgba(80,80,200,0.15);color:#5050CC;">Ku</div>
+                            <div class="bank-avatar" style="background:rgba(80,80,200,0.15);color:#5050CC;">GT</div>
                             <span class="bank-name">GT Bank</span>
                         </div>
                         <div class="bank-check"><span class="bank-check-icon">✓</span></div>
                     </div>
                     <div class="bank-row" onclick="toggleBank(this)">
                         <div class="bank-row-left">
-                            <div class="bank-avatar" style="background:rgba(200,30,30,0.15);color:#C41E1E;">Ze</div>
+                            <div class="bank-avatar" style="background:rgba(200,30,30,0.15);color:#C41E1E;">AC</div>
                             <span class="bank-name">Access Bank</span>
                         </div>
                         <div class="bank-check"><span class="bank-check-icon">✓</span></div>
                     </div>
                     <div class="bank-row" onclick="toggleBank(this)">
                         <div class="bank-row-left">
-                            <div class="bank-avatar" style="background:rgba(0,80,180,0.15);color:#0050B4;">Ac</div>
+                            <div class="bank-avatar" style="background:rgba(0,80,180,0.15);color:#0050B4;">KU</div>
                             <span class="bank-name">Kuda Bank</span>
                         </div>
                         <div class="bank-check"><span class="bank-check-icon">✓</span></div>
@@ -2334,6 +2393,10 @@
                 </div>
             </div>
             <div class="dash-body">
+                <div class="tool-back-row" id="tool-back-row">
+                    <button class="tool-back-btn" onclick="go('s-tools')" aria-label="Back to tools">←</button>
+                    <div class="tool-back-title" id="tool-back-title">Tools</div>
+                </div>
 
                 <!-- OVERVIEW TAB -->
                 <div class="tab-content active" id="tab-overview">
@@ -2358,7 +2421,7 @@
                     </div>
 
                     <div class="stats-grid fade-up delay-2">
-                        <div class="stat-card clickable" onclick="switchTabByName('expenses')" role="button" tabindex="0">
+                        <div class="stat-card clickable" onclick="openTool('expenses')" role="button" tabindex="0">
                             <div class="stat-lbl">Spent this month</div>
                             <div class="stat-val" id="overview-spent">₦311k</div>
                             <div class="stat-bar">
@@ -2435,6 +2498,25 @@
                 <div class="tab-content" id="tab-budget">
 
                     <div class="section-label" id="monthly-budget-header">Monthly Budget</div>
+
+                    <div class="dash-card budget-chart-card">
+                        <div class="budget-chart-header">
+                            <div>
+                                <div class="budget-chart-title">Total Monthly Budget</div>
+                                <div class="budget-detail-meta" id="total-budget-subtitle">₦129,000 spent from ₦165,000</div>
+                            </div>
+                            <div class="budget-chart-value" id="total-budget-value">78%</div>
+                        </div>
+                        <div class="budget-pie-layout">
+                            <div class="budget-pie budget-total-pie" id="total-budget-pie">
+                                <div class="budget-pie-center">
+                                    <div class="budget-pie-value" id="total-budget-pie-value">₦129k</div>
+                                    <div class="budget-pie-label">Total used</div>
+                                </div>
+                            </div>
+                            <div class="budget-breakdown-list" id="total-budget-breakdown"></div>
+                        </div>
+                    </div>
 
                     <div class="dash-card">
                         <div class="section-label">Income and expense ledger</div>
@@ -2597,11 +2679,12 @@
                             <span>Daily outflow</span>
                         </div>
                         <div class="stats-chart" id="stats-spend-chart"></div>
+                        <div class="stats-selected" id="stats-selected-value"></div>
                     </div>
 
                     <div class="stats-grid">
 
-                        <div class="stat-card">
+                        <div class="stat-card clickable" onclick="openCategoryTool('food')" role="button" tabindex="0">
                             <div class="stat-lbl">Highest Spending</div>
                             <div class="stat-val">Food</div>
                             <div class="stat-bar">
@@ -2609,7 +2692,7 @@
                             </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card clickable" onclick="openTool('subscriptions')" role="button" tabindex="0">
                             <div class="stat-lbl">Subscription Spend</div>
                             <div class="stat-val">₦16.9k</div>
                             <div class="stat-bar">
@@ -2617,7 +2700,7 @@
                             </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card clickable" onclick="go('s-persona')" role="button" tabindex="0">
                             <div class="stat-lbl">Savings Rate</div>
                             <div class="stat-val">40%</div>
                             <div class="stat-bar">
@@ -2625,7 +2708,7 @@
                             </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card clickable" onclick="openTool('expenses')" role="button" tabindex="0">
                             <div class="stat-lbl">Transactions</div>
                             <div class="stat-val">128</div>
                             <div class="stat-bar">
@@ -2652,7 +2735,7 @@
         <!-- PERSONA -->
         <section class="screen" id="s-persona">
             <div class="persona-inner">
-                <button class="back-btn" onclick="go('s-dashboard')">←</button>
+                <button class="back-btn" onclick="openOverview()">←</button>
                 <div class="section-label" style="color:#fff;margin-bottom:14px;">Your Spending Persona</div>
                 <div class="persona-hero">
                     <div class="persona-emoji">🎯</div>
@@ -2682,13 +2765,18 @@
                 </div>
                 <div class="insight-card">
                     <div class="insight-tag">Pattern detected</div>
-                    <div class="insight-body">You pay for Netflix (₦4,200) and DStv (₦9,800) simultaneously. Based on
-                        usage patterns, cancelling DStv saves ₦117,600/year.</div>
+                    <div class="insight-body">You mix personal expenses with child care. You should leverage WEMA Royal Kiddies,
+                        earning up to 8% p.a.</div>
                 </div>
                 <div class="insight-card" style="border-color:rgba(93,165,255,0.2);background:rgba(26,95,171,0.08);">
                     <div class="insight-tag" style="color:#93C5FD;">Credit signal</div>
                     <div class="insight-body">Your savings rate and income consistency qualify you for a strong credit
                         profile with Wema Bank.</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-tag">Pattern detected</div>
+                    <div class="insight-body">You pay for Netflix (₦4,200) and DStv (₦9,800) simultaneously. Based on
+                        usage patterns, cancelling DStv saves ₦117,600/year.</div>
                 </div>
                 <button class="btn-outline-green" onclick="go('s-crosssell')">See Recommendations →</button>
             </div>
@@ -2757,6 +2845,26 @@
                     <br>
                     <button class="btn-offer">Start Now →</button>
                     <div class="offer-bg-icon">💎</div>
+                </div>
+                <div class="offer-card credit">
+                    <span class="offer-badge blue">CREDIT</span>
+                    <div class="offer-title">SARA</div>
+                    <div class="offer-desc">Your Pulse persona qualifies your partner for growth opportunities with Sara.
+                    </div>
+                    <div class="offer-stat"><span>up to</span><span class="offer-stat-val">₦500,000</span></div>
+                    <br>
+                    <button class="btn-offer" style="background:var(--blue);">Apply Now →</button>
+                    <div class="offer-bg-icon">💳</div>
+                </div>
+                <div class="offer-card credit">
+                    <span class="offer-badge blue">SAVINGS</span>
+                    <div class="offer-title">Royal Kiddies</div>
+                    <div class="offer-desc">Your Pulse persona qualifies you for specialized savings account for children.
+                    </div>
+                    <div class="offer-stat"><span>Savings with higher interest</span><span class="offer-stat-val">Unlimited</span></div>
+                    <br>
+                    <button class="btn-offer" style="background:var(--blue);">Apply Now →</button>
+                    <div class="offer-bg-icon">💳</div>
                 </div>
                 <div class="offer-card credit">
                     <span class="offer-badge blue">Credit</span>
@@ -2954,7 +3062,7 @@
 
         const expenses = [
             { date: 'Today', merchant: 'Chicken Republic', category: 'Food', meta: 'GTBank · 1:24 PM', amount: -8400, icon: '🍔', bg: '#FEF3C7' },
-            { date: 'Today', merchant: 'Gift Transfer', category: 'Personal', meta: 'Wema · 10:14 AM', amount: -12000, icon: '🎁', bg: '#FEE2E2' },
+            { date: 'Today', merchant: 'Child Care', category: 'Personal', meta: 'Wema · 10:14 AM', amount: -12000, icon: '🎁', bg: '#FEE2E2' },
             { date: 'Today', merchant: 'Netflix', category: 'Subscription', meta: 'GTBank · 8:00 AM', amount: -4200, icon: '🎬', bg: '#FEE2E2' },
             { date: 'Yesterday', merchant: 'Fuel Purchase', category: 'Energy', meta: 'Wema · 6:42 PM', amount: -35000, icon: '⛽', bg: '#FED7AA' },
             { date: 'Yesterday', merchant: 'Glovo', category: 'Food Delivery', meta: 'Kuda · 3:18 PM', amount: -12400, icon: '🛵', bg: '#DCFCE7' },
@@ -3136,8 +3244,34 @@
             const progress = document.getElementById('budget-total-progress');
             if (progress) progress.style.width = `${percentage}%`;
 
+            renderTotalBudgetChart(used, limit, percentage);
             renderBudgetLedger();
             renderOverviewSnapshot();
+        }
+
+        function renderTotalBudgetChart(used, limit, percentage) {
+            setText('total-budget-subtitle', `${formatNaira(used)} spent from ${formatNaira(limit)}`);
+            setText('total-budget-value', `${percentage}%`);
+            setText('total-budget-pie-value', compactCurrency(formatNaira(used)));
+
+            const pie = document.getElementById('total-budget-pie');
+            if (pie) {
+                const degrees = Math.min((used / limit) * 360, 360);
+                pie.style.background = `conic-gradient(var(--g) 0deg ${degrees.toFixed(1)}deg, #E5E7EB ${degrees.toFixed(1)}deg 360deg)`;
+            }
+
+            const breakdown = document.getElementById('total-budget-breakdown');
+            if (breakdown) {
+                breakdown.innerHTML = budgetCategories.map((category, index) => `
+                    <div class="budget-breakdown-row">
+                        <div class="budget-breakdown-label">
+                            <span class="budget-color-dot" style="background:${budgetColors[index % budgetColors.length]};"></span>
+                            <span>${category.name}</span>
+                        </div>
+                        <strong>${category.percentage}%</strong>
+                    </div>
+                `).join('');
+            }
         }
 
         function renderBudgetCategories() {
@@ -3302,11 +3436,12 @@
 
             if (overviewChart) overviewChart.innerHTML = bars;
             if (statsChart) {
-                statsChart.innerHTML = weeklySpend.map(item => {
+                statsChart.innerHTML = weeklySpend.map((item, index) => {
                     const height = Math.max(Math.round((item.amount / max) * 126), 22);
                     return `
                         <div class="stats-chart-bar">
-                            <div class="stats-bar-fill" style="height:${height}px;"></div>
+                            <div class="stats-bar-fill" style="height:${height}px;" onclick="selectStatsPoint(${index})"
+                                role="button" tabindex="0"></div>
                             <div class="overview-chart-label">${item.day}</div>
                         </div>
                     `;
@@ -3511,19 +3646,67 @@
             switchTab(tab);
         }
 
+        function setToolBack(tab) {
+            const row = document.getElementById('tool-back-row');
+            const title = document.getElementById('tool-back-title');
+            if (!row || !title) return;
+
+            if (tab === 'overview') {
+                row.classList.remove('visible');
+                return;
+            }
+
+            const labels = {
+                budget: 'Budget',
+                expenses: 'Expenses',
+                subscriptions: 'Subscriptions',
+                stats: 'Stats'
+            };
+            title.textContent = labels[tab] || 'Tools';
+            row.classList.add('visible');
+        }
+
         function openOverview() {
             switchTabByName('overview');
+            setToolBack('overview');
             go('s-dashboard');
         }
 
         function openTool(tab) {
             switchTabByName(tab);
+            setToolBack(tab);
             go('s-dashboard');
             if (tab === 'budget') {
                 setTimeout(() => {
                     const header = document.getElementById('monthly-budget-header');
                     if (header) header.scrollIntoView({ block: 'start' });
                 }, 420);
+            }
+        }
+
+        function openCategoryTool(categoryId) {
+            selectedBudgetCategory = categoryId;
+            renderBudgetCategories();
+            renderBudgetDetail();
+            openTool('budget');
+        }
+
+        function selectStatsPoint(index) {
+            const point = weeklySpend[index];
+            if (!point) return;
+
+            document.querySelectorAll('.stats-bar-fill').forEach(bar => {
+                bar.classList.remove('active');
+            });
+            const bars = document.querySelectorAll('.stats-bar-fill');
+            if (bars[index]) bars[index].classList.add('active');
+
+            const total = weeklySpend.reduce((sum, item) => sum + item.amount, 0);
+            const percentage = Math.round((point.amount / total) * 100);
+            const selected = document.getElementById('stats-selected-value');
+            if (selected) {
+                selected.classList.add('visible');
+                selected.textContent = `${point.day}: ${formatNaira(point.amount)} (${percentage}% of weekly spend)`;
             }
         }
 
