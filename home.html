@@ -15,6 +15,23 @@
             padding: 0;
         }
 
+        button,
+        [role="button"] {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        button:focus-visible,
+        [role="button"]:focus-visible {
+            outline: 2px solid var(--g2);
+            outline-offset: 2px;
+        }
+
+        button:active,
+        [role="button"]:active {
+            transform: scale(0.98);
+        }
+
         :root {
             --g: #00843D;
             --g2: #00A84F;
@@ -674,6 +691,11 @@
             transition: background 0.2s, border-color 0.2s, color 0.2s;
         }
 
+        .bank-chip:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
         .bank-chip.active {
             background: rgba(0, 132, 61, 0.28);
             border-color: rgba(0, 168, 79, 0.65);
@@ -841,24 +863,29 @@
 
         .sub-info {
             flex: 1;
+            min-width: 0;
         }
 
         .sub-name {
             font-size: 13px;
             font-weight: 500;
             color: #1A2B1F;
+            overflow-wrap: anywhere;
         }
 
         .sub-meta {
             font-size: 11px;
             color: var(--muted);
             margin-top: 1px;
+            overflow-wrap: anywhere;
         }
 
         .sub-amt {
             font-size: 13px;
             font-weight: 600;
             color: #1A2B1F;
+            flex-shrink: 0;
+            text-align: right;
         }
 
         .filter-chip-row {
@@ -884,6 +911,11 @@
             white-space: nowrap;
             cursor: pointer;
             transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .filter-chip:hover {
+            border-color: rgba(0, 132, 61, 0.32);
+            color: var(--g);
         }
 
         .filter-chip.active {
@@ -919,6 +951,7 @@
             font-size: 12px;
             font-weight: 700;
             color: #1A2B1F;
+            overflow-wrap: anywhere;
         }
 
         .subscription-note {
@@ -1137,6 +1170,7 @@
             font-weight: 800;
             color: #1A2B1F;
             margin-bottom: 4px;
+            overflow-wrap: anywhere;
         }
 
         .budget-detail-meta {
@@ -1144,6 +1178,7 @@
             line-height: 1.55;
             color: var(--muted);
             margin-bottom: 12px;
+            overflow-wrap: anywhere;
         }
 
         .budget-preset-row {
@@ -1219,18 +1254,21 @@
 
         .txn-info {
             flex: 1;
+            min-width: 0;
         }
 
         .txn-name {
             font-size: 12px;
             font-weight: 500;
             color: #1A2B1F;
+            overflow-wrap: anywhere;
         }
 
         .txn-cat {
             font-size: 10px;
             color: var(--muted);
             margin-top: 1px;
+            overflow-wrap: anywhere;
         }
 
         .txn-amt {
@@ -1473,6 +1511,7 @@
             font-size: 11px;
             line-height: 1.45;
             color: var(--muted);
+            overflow-wrap: anywhere;
         }
 
         .bank-activity-dot {
@@ -2745,6 +2784,7 @@
 
             list.innerHTML = budgetCategories.map(category => `
                 <div class="sub-row budget-category-row ${category.id === selectedBudgetCategory ? 'active' : ''}"
+                    role="button" tabindex="0"
                     onclick="selectBudgetCategory('${category.id}')">
                     <div class="sub-info">
                         <div class="sub-name">${category.name}</div>
@@ -2874,6 +2914,7 @@
                 const statusLabel = subscription.status === 'active' ? 'Active' : 'Inactive';
                 return `
                     <div class="sub-row clickable ${subscription.id === selectedSubscription ? 'active' : ''}"
+                        role="button" tabindex="0"
                         onclick="selectSubscription('${subscription.id}')">
                         <div class="sub-icon" style="background:${icon.bg};">${icon.icon}</div>
                         <div class="sub-info">
@@ -2941,7 +2982,8 @@
             grid.innerHTML = Object.entries(personaTraits).map(([traitId, trait]) => {
                 const color = traitColors[traitId];
                 return `
-                    <div class="trait-card ${traitId === selectedTrait ? 'active' : ''}" onclick="selectTrait('${traitId}')">
+                    <div class="trait-card ${traitId === selectedTrait ? 'active' : ''}" role="button" tabindex="0"
+                        onclick="selectTrait('${traitId}')">
                         <div class="trait-score" style="color:${color};">${trait.score}</div>
                         <div class="trait-name">${trait.label}</div>
                         <div class="trait-ring">
@@ -3030,6 +3072,17 @@
                     }
                 });
             }
+
+            document.addEventListener('keydown', event => {
+                if (event.defaultPrevented) return;
+                const target = event.target;
+                if (!(target instanceof HTMLElement) || target.tagName === 'BUTTON') return;
+                if (target.getAttribute('role') !== 'button') return;
+                if (event.key !== 'Enter' && event.key !== ' ') return;
+
+                event.preventDefault();
+                target.click();
+            });
         });
     </script>
 </body>
