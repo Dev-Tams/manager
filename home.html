@@ -1064,6 +1064,84 @@
             padding-bottom: 14px;
         }
 
+        .budget-period-toggle {
+            display: inline-flex;
+            gap: 4px;
+            padding: 3px;
+            background: #EEF2EF;
+            border-radius: 99px;
+            margin-bottom: 12px;
+        }
+
+        .period-btn {
+            border: none;
+            border-radius: 99px;
+            padding: 6px 10px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--muted);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .period-btn.active {
+            background: #fff;
+            color: var(--g);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .budget-pie-layout {
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .budget-pie {
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            background: conic-gradient(var(--g) 0deg 237deg, var(--amber) 237deg 307deg, var(--blue) 307deg 360deg);
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+        }
+
+        .budget-pie::after {
+            content: '';
+            position: absolute;
+            inset: 24px;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .budget-pie-center {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .budget-pie-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: #1A2B1F;
+            line-height: 1;
+        }
+
+        .budget-pie-label {
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
         .budget-ledger-grid,
         .overview-metric-grid {
             display: grid;
@@ -2356,7 +2434,7 @@
                 <!-- BUDGET TAB -->
                 <div class="tab-content" id="tab-budget">
 
-                    <div class="section-label">Monthly Budget</div>
+                    <div class="section-label" id="monthly-budget-header">Monthly Budget</div>
 
                     <div class="dash-card">
                         <div class="section-label">Income and expense ledger</div>
@@ -2397,6 +2475,10 @@
                     </div>
 
                     <div class="dash-card budget-chart-card">
+                        <div class="budget-period-toggle" aria-label="Budget chart period">
+                            <button class="period-btn active" onclick="setBudgetPeriod('month', this)">Month</button>
+                            <button class="period-btn" onclick="setBudgetPeriod('day', this)">Day</button>
+                        </div>
                         <div class="budget-chart-header">
                             <div>
                                 <div class="budget-chart-title" id="budget-chart-title">Food & Dining split</div>
@@ -2404,8 +2486,15 @@
                             </div>
                             <div class="budget-chart-value" id="budget-chart-value">85%</div>
                         </div>
-                        <div class="budget-chart-track" id="budget-chart-track"></div>
-                        <div class="budget-breakdown-list" id="budget-breakdown-list"></div>
+                        <div class="budget-pie-layout">
+                            <div class="budget-pie" id="budget-pie">
+                                <div class="budget-pie-center">
+                                    <div class="budget-pie-value" id="budget-pie-value">₦85k</div>
+                                    <div class="budget-pie-label" id="budget-pie-label">Month</div>
+                                </div>
+                            </div>
+                            <div class="budget-breakdown-list" id="budget-breakdown-list"></div>
+                        </div>
                         <div class="budget-limit-flow">
                             <div class="budget-breakdown-row">
                                 <span>Current budget flow</span>
@@ -2551,9 +2640,9 @@
             </div>
             <div class="bottom-nav">
                 <div class="nav-item active" onclick="openOverview()"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item" onclick="go('s-tools')"><span class="nav-icon">▦</span><span>Tools</span></div>
                 <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span>
                 </div>
-                <div class="nav-item" onclick="go('s-tools')"><span class="nav-icon">▦</span><span>Tools</span></div>
                 <div class="nav-item" onclick="go('s-crosssell')"><span class="nav-icon">✦</span><span>Offers</span>
                 </div>
                 <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
@@ -2605,8 +2694,8 @@
             </div>
             <div class="bottom-nav">
                 <div class="nav-item" onclick="openOverview()"><span class="nav-icon">⊞</span><span>Home</span></div>
-                <div class="nav-item active"><span class="nav-icon">◎</span><span>Persona</span></div>
                 <div class="nav-item" onclick="go('s-tools')"><span class="nav-icon">▦</span><span>Tools</span></div>
+                <div class="nav-item active"><span class="nav-icon">◎</span><span>Persona</span></div>
                 <div class="nav-item" onclick="go('s-crosssell')"><span class="nav-icon">✦</span><span>Offers</span>
                 </div>
                 <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
@@ -2646,8 +2735,8 @@
             </div>
             <div class="bottom-nav">
                 <div class="nav-item" onclick="openOverview()"><span class="nav-icon">⊞</span><span>Home</span></div>
-                <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span></div>
                 <div class="nav-item active"><span class="nav-icon">▦</span><span>Tools</span></div>
+                <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span></div>
                 <div class="nav-item" onclick="go('s-crosssell')"><span class="nav-icon">✦</span><span>Offers</span></div>
                 <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
             </div>
@@ -2689,9 +2778,9 @@
             </div>
             <div class="bottom-nav" style="background:#fff;">
                 <div class="nav-item" onclick="openOverview()"><span class="nav-icon">⊞</span><span>Home</span></div>
+                <div class="nav-item" onclick="go('s-tools')"><span class="nav-icon">▦</span><span>Tools</span></div>
                 <div class="nav-item" onclick="go('s-persona')"><span class="nav-icon">◎</span><span>Persona</span>
                 </div>
-                <div class="nav-item" onclick="go('s-tools')"><span class="nav-icon">▦</span><span>Tools</span></div>
                 <div class="nav-item active"><span class="nav-icon">✦</span><span>Offers</span></div>
                 <div class="nav-item"><span class="nav-icon">◯</span><span>Profile</span></div>
             </div>
@@ -2944,6 +3033,7 @@
         let current = 's-splash';
         let selectedBank = 'all';
         let selectedBudgetCategory = 'food';
+        let budgetPeriod = 'month';
         let selectedSubscription = 'netflix';
         let subscriptionFilter = 'all';
         let selectedTrait = 'savings';
@@ -3069,21 +3159,34 @@
 
         function renderBudgetDetail() {
             const category = getBudgetCategory(selectedBudgetCategory);
-            const totalBreakdown = category.breakdown.reduce((sum, item) => sum + item.amount, 0);
-            const segments = category.breakdown.map((item, index) => {
-                const width = Math.max((item.amount / totalBreakdown) * 100, 8);
-                return `<div class="budget-chart-segment" style="width:${width}%;background:${budgetColors[index % budgetColors.length]};"></div>`;
-            }).join('');
+            const periodFactor = budgetPeriod === 'day' ? 1 / 18 : 1;
+            const displaySpent = Math.round(category.spent * periodFactor);
+            const displayLimit = Math.round(category.limit * periodFactor);
+            const periodBreakdown = category.breakdown.map(item => ({
+                label: item.label,
+                amount: Math.max(Math.round(item.amount * periodFactor), budgetPeriod === 'day' ? 200 : 0)
+            }));
+            const totalBreakdown = periodBreakdown.reduce((sum, item) => sum + item.amount, 0);
+            let start = 0;
+            const pieStops = periodBreakdown.map((item, index) => {
+                const degrees = (item.amount / totalBreakdown) * 360;
+                const end = start + degrees;
+                const stop = `${budgetColors[index % budgetColors.length]} ${start.toFixed(1)}deg ${end.toFixed(1)}deg`;
+                start = end;
+                return stop;
+            }).join(', ');
 
-            setText('budget-chart-title', `${category.name} split`);
-            setText('budget-chart-subtitle', `${formatNaira(category.spent)} spent from ${formatNaira(category.limit)}`);
-            setText('budget-chart-value', `${category.percentage}%`);
+            setText('budget-chart-title', `${category.name} ${budgetPeriod === 'day' ? 'daily' : 'monthly'} split`);
+            setText('budget-chart-subtitle', `${formatNaira(displaySpent)} spent from ${formatNaira(displayLimit)} ${budgetPeriod === 'day' ? 'today' : 'this month'}`);
+            setText('budget-chart-value', `${Math.min(Math.round((displaySpent / displayLimit) * 100), 100)}%`);
             setText('budget-detail-title', category.name);
             setText('budget-detail-meta', category.projection);
             setText('budget-limit-label', `${category.percentage}% of limit`);
 
-            const chart = document.getElementById('budget-chart-track');
-            if (chart) chart.innerHTML = segments;
+            const pie = document.getElementById('budget-pie');
+            if (pie) pie.style.background = `conic-gradient(${pieStops})`;
+            setText('budget-pie-value', compactCurrency(formatNaira(displaySpent)));
+            setText('budget-pie-label', budgetPeriod === 'day' ? 'Today' : 'Month');
 
             const limitFill = document.getElementById('budget-limit-fill');
             if (limitFill) {
@@ -3093,7 +3196,7 @@
 
             const breakdown = document.getElementById('budget-breakdown-list');
             if (breakdown) {
-                breakdown.innerHTML = category.breakdown.map((item, index) => `
+                breakdown.innerHTML = periodBreakdown.map((item, index) => `
                     <div class="budget-breakdown-row">
                         <div class="budget-breakdown-label">
                             <span class="budget-color-dot" style="background:${budgetColors[index % budgetColors.length]};"></span>
@@ -3120,6 +3223,15 @@
             const editor = document.getElementById('budget-preset-row');
             if (editor) editor.classList.remove('visible');
             renderBudgetCategories();
+            renderBudgetDetail();
+        }
+
+        function setBudgetPeriod(period, el) {
+            budgetPeriod = period;
+            document.querySelectorAll('.period-btn').forEach(button => {
+                button.classList.remove('active');
+            });
+            if (el) el.classList.add('active');
             renderBudgetDetail();
         }
 
@@ -3407,6 +3519,12 @@
         function openTool(tab) {
             switchTabByName(tab);
             go('s-dashboard');
+            if (tab === 'budget') {
+                setTimeout(() => {
+                    const header = document.getElementById('monthly-budget-header');
+                    if (header) header.scrollIntoView({ block: 'start' });
+                }, 420);
+            }
         }
 
         function startLoading() {
