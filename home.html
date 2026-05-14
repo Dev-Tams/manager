@@ -248,7 +248,7 @@
         .splash-powered {
             text-align: center;
             font-size: 10px;
-            color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
             letter-spacing: 1.5px;
             text-transform: uppercase;
             margin-top: 12px;
@@ -356,7 +356,7 @@
 
         .privacy-note {
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.5);
             text-align: center;
             line-height: 1.6;
             padding: 0 8px 36px;
@@ -631,7 +631,7 @@
 
         .bal-label {
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.8);
             margin-bottom: 4px;
         }
 
@@ -645,8 +645,40 @@
 
         .bal-sub {
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.5);
             margin-top: 3px;
+        }
+
+        .bank-chip-row {
+            display: flex;
+            gap: 7px;
+            overflow-x: auto;
+            margin-top: 12px;
+            padding-bottom: 2px;
+        }
+
+        .bank-chip-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .bank-chip {
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            background: rgba(255, 255, 255, 0.07);
+            color: rgba(255, 255, 255, 0.58);
+            border-radius: 99px;
+            padding: 7px 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+
+        .bank-chip.active {
+            background: rgba(0, 132, 61, 0.28);
+            border-color: rgba(0, 168, 79, 0.65);
+            color: #fff;
+            font-weight: 600;
         }
 
         .bal-row {
@@ -654,12 +686,12 @@
             gap: 20px;
             margin-top: 14px;
             padding-top: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .bal-item-label {
             font-size: 10px;
-            color: rgba(255, 255, 255, 0.35);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .bal-item-val {
@@ -871,6 +903,190 @@
             background: var(--g);
         }
 
+        .budget-summary {
+            background: var(--dark);
+            color: #fff;
+        }
+
+        .budget-summary-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .budget-total {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-top: 3px;
+        }
+
+        .budget-status-pill {
+            border-radius: 99px;
+            background: rgba(192, 57, 43, 0.18);
+            color: #FFB4A8;
+            padding: 5px 9px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .budget-progress {
+            height: 8px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .budget-progress-fill {
+            height: 100%;
+            border-radius: 99px;
+            background: linear-gradient(90deg, var(--g2), #F59E0B, #C0392B);
+        }
+
+        .budget-note {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.48);
+            line-height: 1.5;
+        }
+
+        .budget-chart-card {
+            padding-bottom: 14px;
+        }
+
+        .budget-chart-header {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .budget-chart-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1A2B1F;
+        }
+
+        .budget-chart-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--g);
+        }
+
+        .budget-chart-track {
+            height: 18px;
+            border-radius: 99px;
+            overflow: hidden;
+            background: #EEF2EF;
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .budget-chart-segment {
+            height: 100%;
+            transition: width 0.2s;
+        }
+
+        .budget-breakdown-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .budget-breakdown-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 8px;
+            align-items: center;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .budget-breakdown-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .budget-color-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .budget-category-row {
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.15s;
+        }
+
+        .budget-category-row:hover {
+            transform: translateY(-1px);
+        }
+
+        .budget-category-row.active {
+            background: rgba(0, 132, 61, 0.07);
+            border-color: rgba(0, 132, 61, 0.24);
+        }
+
+        .budget-detail-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: #1A2B1F;
+            margin-bottom: 4px;
+        }
+
+        .budget-detail-meta {
+            font-size: 11px;
+            line-height: 1.55;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .budget-preset-row {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .budget-preset-row.visible {
+            display: grid;
+        }
+
+        .budget-preset {
+            border: 1px solid rgba(0, 132, 61, 0.15);
+            background: rgba(0, 132, 61, 0.06);
+            color: var(--g);
+            border-radius: 10px;
+            padding: 9px 6px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .budget-edit-btn {
+            width: 100%;
+            border: none;
+            background: var(--g);
+            color: #fff;
+            border-radius: 12px;
+            padding: 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
         .persona-hint {
             font-size: 10px;
             color: rgba(255, 255, 255, 0.35);
@@ -977,6 +1193,14 @@
             display: flex;
             gap: 12px;
             align-items: flex-start;
+            cursor: default;
+        }
+
+        .ai-strip.risk {
+            background: #2A1512;
+            border: 1px solid rgba(192, 57, 43, 0.26);
+            box-shadow: 0 10px 24px rgba(192, 57, 43, 0.08);
+            cursor: pointer;
         }
 
         .ai-pulse {
@@ -991,6 +1215,11 @@
             font-size: 14px;
         }
 
+        .ai-strip.risk .ai-pulse {
+            background: rgba(192, 57, 43, 0.22);
+            color: #FFB4A8;
+        }
+
         .ai-text {
             font-size: 11px;
             color: rgba(255, 255, 255, 0.55);
@@ -999,6 +1228,164 @@
 
         .ai-text strong {
             color: var(--g2);
+        }
+
+        .ai-strip.risk .ai-text strong {
+            color: #FFB4A8;
+        }
+
+        .ai-risk-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 8px;
+            border-radius: 99px;
+            background: rgba(192, 57, 43, 0.2);
+            color: #FFB4A8;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .ai-risk-action {
+            margin-top: 7px;
+            padding-top: 7px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .ai-risk-summary {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .ai-risk-caret {
+            color: #FFB4A8;
+            font-size: 13px;
+            transform: rotate(0deg);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .ai-risk-detail {
+            display: none;
+            margin-top: 5px;
+        }
+
+        .ai-strip.expanded .ai-risk-detail {
+            display: block;
+        }
+
+        .ai-strip.expanded .ai-risk-caret {
+            transform: rotate(180deg);
+        }
+
+        .recommendation-card {
+            border: 1px solid rgba(0, 132, 61, 0.14);
+            background: linear-gradient(135deg, rgba(0, 132, 61, 0.08), #fff 58%);
+        }
+
+        .rec-kicker {
+            font-size: 10px;
+            color: var(--g);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .rec-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            color: #1A2B1F;
+            margin-bottom: 5px;
+        }
+
+        .rec-copy,
+        .rec-detail {
+            font-size: 11px;
+            line-height: 1.55;
+            color: var(--muted);
+        }
+
+        .rec-detail {
+            display: none;
+            margin-top: 9px;
+            padding-top: 9px;
+            border-top: 1px solid rgba(0, 132, 61, 0.12);
+        }
+
+        .rec-detail.visible {
+            display: block;
+        }
+
+        .rec-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .rec-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 9px 11px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .rec-btn.primary {
+            background: var(--g);
+            color: #fff;
+        }
+
+        .rec-btn.secondary {
+            background: rgba(0, 132, 61, 0.09);
+            color: var(--g);
+        }
+
+        .rec-status {
+            display: none;
+            margin-top: 10px;
+            padding: 9px 10px;
+            border-radius: 10px;
+            background: rgba(0, 132, 61, 0.09);
+            color: var(--g);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .rec-status.visible {
+            display: block;
+        }
+
+        .bank-activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .bank-activity-item {
+            display: flex;
+            gap: 9px;
+            font-size: 11px;
+            line-height: 1.45;
+            color: var(--muted);
+        }
+
+        .bank-activity-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--g);
+            flex-shrink: 0;
+            margin-top: 5px;
         }
 
         /* PERSONA */
@@ -1409,21 +1796,27 @@
                     <button class="notif-btn">🔔</button>
                 </div>
                 <div class="balance-block">
-                    <div class="bal-label">Total balance (all accounts)</div>
-                    <div class="bal-amount">₦1,247,500</div>
-                    <div class="bal-sub">Wema · GTBank · Kuda · via Open Banking</div>
+                    <div class="bal-label" id="balance-label">Total balance (all accounts)</div>
+                    <div class="bal-amount" id="balance-amount">₦1,247,500</div>
+                    <div class="bal-sub" id="balance-subtitle">Wema · GTBank · Kuda · via Open Banking</div>
+                    <div class="bank-chip-row" aria-label="Select bank balance">
+                        <button class="bank-chip active" onclick="selectBank('all', this)">All banks</button>
+                        <button class="bank-chip" onclick="selectBank('wema', this)">Wema</button>
+                        <button class="bank-chip" onclick="selectBank('gtbank', this)">GTBank</button>
+                        <button class="bank-chip" onclick="selectBank('kuda', this)">Kuda</button>
+                    </div>
                     <div class="bal-row">
                         <div>
                             <div class="bal-item-label">Income</div>
-                            <div class="bal-item-val pos">₦520,000</div>
+                            <div class="bal-item-val pos" id="balance-income">₦520,000</div>
                         </div>
                         <div>
                             <div class="bal-item-label">Spent</div>
-                            <div class="bal-item-val neg">₦311,240</div>
+                            <div class="bal-item-val neg" id="balance-spent">₦311,240</div>
                         </div>
                         <div>
                             <div class="bal-item-label">Saved</div>
-                            <div class="bal-item-val pos">40.1%</div>
+                            <div class="bal-item-val pos" id="balance-saved">40.1%</div>
                         </div>
                     </div>
                 </div>
@@ -1440,20 +1833,31 @@
                 <!-- OVERVIEW TAB -->
                 <div class="tab-content active" id="tab-overview">
 
-                    <div class="ai-strip fade-up">
-                        <div class="ai-pulse">✦</div>
+                    <div class="ai-strip risk fade-up" id="budget-risk-card" onclick="toggleRiskInsight()"
+                        role="button" tabindex="0" aria-expanded="false">
+                        <div class="ai-pulse">!</div>
                         <div class="ai-text">
-                            <strong>AI insight:</strong>
-                            You're on track to exceed your food budget by ₦15,000 this month.
+                            <div class="ai-risk-label">Budget red flag</div>
+                            <div class="ai-risk-summary">
+                                <strong>Food spending may exceed budget by ₦15,000.</strong>
+                                <span class="ai-risk-caret">⌄</span>
+                            </div>
+                            <div class="ai-risk-detail">
+                                Food spending is at ₦85,000 of your ₦100,000 budget with 12 days left. If you continue
+                                like this, you may end around ₦115,000, which is ₦15,000 over budget.
+                                <div class="ai-risk-action">
+                                    Reduce food delivery by ₦1,250/day or move ₦15,000 from flexible shopping.
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="stats-grid fade-up delay-2">
                         <div class="stat-card">
                             <div class="stat-lbl">Spent this month</div>
-                            <div class="stat-val">₦311k</div>
+                            <div class="stat-val" id="overview-spent">₦311k</div>
                             <div class="stat-bar">
-                                <div class="stat-bar-fill" style="width:60%;"></div>
+                                <div class="stat-bar-fill" id="overview-spent-bar" style="width:60%;"></div>
                             </div>
                         </div>
 
@@ -1466,36 +1870,78 @@
                         </div>
                     </div>
 
+                    <div class="dash-card recommendation-card fade-up delay-2">
+                        <div class="rec-kicker">Recommended saving option</div>
+                        <div class="rec-title">Move ₦50,000 to Wema Fixed Savings</div>
+                        <div class="rec-copy">
+                            Your salary pattern and current bills leave enough buffer after salary day.
+                        </div>
+                        <div class="rec-actions">
+                            <button class="rec-btn primary" onclick="setRecommendationState(event)">Start saving</button>
+                            <button class="rec-btn secondary" onclick="toggleRecommendationCalc(event)">View calculation</button>
+                        </div>
+                        <div class="rec-detail" id="recommendation-detail">
+                            Salary inflow is ₦520,000. After current spending and recurring bills, Pulse estimates a
+                            safe ₦50,000 transfer while keeping daily-spend buffer intact.
+                        </div>
+                        <div class="rec-status" id="recommendation-status">
+                            Savings plan drafted for Wema Fixed Savings.
+                        </div>
+                    </div>
+
+                    <div class="dash-card fade-up delay-2">
+                        <div class="section-label" id="bank-activity-title">All banks activity</div>
+                        <div class="bank-activity-list" id="bank-activity-list"></div>
+                    </div>
+
                 </div>
 
                 <!-- BUDGET TAB -->
                 <div class="tab-content" id="tab-budget">
 
-                    <div class="section-label">Monthly Budgets</div>
+                    <div class="section-label">Monthly Budget</div>
+
+                    <div class="dash-card budget-summary">
+                        <div class="budget-summary-top">
+                            <div>
+                                <div class="bal-item-label">Used across tracked budgets</div>
+                                <div class="budget-total" id="budget-total-used">₦129,000 / ₦165,000</div>
+                            </div>
+                            <div class="budget-status-pill" id="budget-summary-status">Food at risk</div>
+                        </div>
+                        <div class="budget-progress">
+                            <div class="budget-progress-fill" id="budget-total-progress" style="width:78%;"></div>
+                        </div>
+                        <div class="budget-note" id="budget-summary-note">
+                            Food is the pressure point. Tap a category to inspect the spending drivers.
+                        </div>
+                    </div>
+
+                    <div class="dash-card budget-chart-card">
+                        <div class="budget-chart-header">
+                            <div>
+                                <div class="budget-chart-title" id="budget-chart-title">Food & Dining split</div>
+                                <div class="budget-detail-meta" id="budget-chart-subtitle">₦85,000 spent from ₦100,000</div>
+                            </div>
+                            <div class="budget-chart-value" id="budget-chart-value">85%</div>
+                        </div>
+                        <div class="budget-chart-track" id="budget-chart-track"></div>
+                        <div class="budget-breakdown-list" id="budget-breakdown-list"></div>
+                    </div>
+
+                    <div class="dash-card" id="budget-category-list"></div>
 
                     <div class="dash-card">
-                        <div class="sub-row">
-                            <div class="sub-info">
-                                <div class="sub-name">Food & Dining</div>
-                                <div class="sub-meta">₦85,000 / ₦100,000 used</div>
-                            </div>
-                            <div class="sub-amt">85%</div>
+                        <div class="budget-detail-title" id="budget-detail-title">Food & Dining</div>
+                        <div class="budget-detail-meta" id="budget-detail-meta">
+                            Projected to end around ₦115,000, ₦15,000 over budget.
                         </div>
-
-                        <div class="sub-row">
-                            <div class="sub-info">
-                                <div class="sub-name">Transport</div>
-                                <div class="sub-meta">₦25,000 / ₦40,000 used</div>
-                            </div>
-                            <div class="sub-amt">62%</div>
-                        </div>
-
-                        <div class="sub-row">
-                            <div class="sub-info">
-                                <div class="sub-name">Entertainment</div>
-                                <div class="sub-meta">₦19,000 / ₦25,000 used</div>
-                            </div>
-                            <div class="sub-amt">76%</div>
+                        <div class="bank-activity-list" id="budget-transaction-list"></div>
+                        <button class="budget-edit-btn" onclick="toggleBudgetEditor()">Edit budget</button>
+                        <div class="budget-preset-row" id="budget-preset-row">
+                            <button class="budget-preset" onclick="setBudgetLimit(80000)">₦80k</button>
+                            <button class="budget-preset" onclick="setBudgetLimit(100000)">₦100k</button>
+                            <button class="budget-preset" onclick="setBudgetLimit(120000)">₦120k</button>
                         </div>
                     </div>
 
@@ -1832,7 +2278,401 @@
 
     </div>
     <script>
+        const banks = {
+            all: {
+                label: 'All banks',
+                balance: '₦1,247,500',
+                income: '₦520,000',
+                spent: '₦311,240',
+                saved: '40.1%',
+                subtitle: 'Wema · GTBank · Kuda · via Open Banking',
+                activity: [
+                    'Salary landed in Wema and spending split across GTBank and Kuda.',
+                    'Food budget is under pressure from delivery and restaurant payments.',
+                    'Netflix is charged from GTBank; Bolt rides are mostly charged from Kuda.'
+                ]
+            },
+            wema: {
+                label: 'Wema',
+                balance: '₦620,000',
+                income: '₦520,000',
+                spent: '₦86,000',
+                saved: '48%',
+                subtitle: 'Salary, savings, and Wema offers',
+                activity: [
+                    'Salary inflow of ₦520,000 detected this month.',
+                    'Savings behavior supports a ₦50,000 fixed savings plan.',
+                    'No high-risk subscription is currently paid from Wema.'
+                ]
+            },
+            gtbank: {
+                label: 'GTBank',
+                balance: '₦410,500',
+                income: '₦0',
+                spent: '₦143,200',
+                saved: '22%',
+                subtitle: 'Netflix, food, and recurring payments',
+                activity: [
+                    'Netflix subscription of ₦4,200 is paid from GTBank.',
+                    'Food and restaurant transactions are driving budget pressure.',
+                    'Recurring payments should be reviewed before the next billing cycle.'
+                ]
+            },
+            kuda: {
+                label: 'Kuda',
+                balance: '₦217,000',
+                income: '₦0',
+                spent: '₦82,040',
+                saved: '18%',
+                subtitle: 'Bolt, food delivery, and daily spending',
+                activity: [
+                    'Bolt rides are above the usual monthly transport pattern.',
+                    'Food delivery payments are frequent and small, but add up quickly.',
+                    'Kuda spending suggests a car savings goal could be useful.'
+                ]
+            }
+        };
+
+        const budgetCategories = [
+            {
+                id: 'food',
+                name: 'Food & Dining',
+                spent: 85000,
+                limit: 100000,
+                percentage: 85,
+                status: 'At risk',
+                projection: 'Projected to end around ₦115,000, ₦15,000 over budget.',
+                breakdown: [
+                    { label: 'Restaurants', amount: 42000 },
+                    { label: 'Food delivery', amount: 28000 },
+                    { label: 'Groceries', amount: 15000 }
+                ],
+                transactions: [
+                    { merchant: 'Chicken Republic', meta: 'Restaurant · GTBank', amount: '-₦8,400' },
+                    { merchant: 'Glovo', meta: 'Food delivery · Kuda', amount: '-₦12,400' },
+                    { merchant: 'Chowdeck', meta: 'Food delivery · Kuda', amount: '-₦3,300' }
+                ]
+            },
+            {
+                id: 'transport',
+                name: 'Transport',
+                spent: 25000,
+                limit: 40000,
+                percentage: 62,
+                status: 'Healthy',
+                projection: 'Projected to stay inside budget if ride spend slows down.',
+                breakdown: [
+                    { label: 'Bolt', amount: 18400 },
+                    { label: 'Uber', amount: 6200 },
+                    { label: 'Fuel', amount: 400 }
+                ],
+                transactions: [
+                    { merchant: 'Bolt Ride', meta: 'Transport · Kuda', amount: '-₦18,400' },
+                    { merchant: 'Uber Trip', meta: 'Transport · GTBank', amount: '-₦6,200' }
+                ]
+            },
+            {
+                id: 'entertainment',
+                name: 'Entertainment',
+                spent: 19000,
+                limit: 25000,
+                percentage: 76,
+                status: 'Watch',
+                projection: 'Subscription overlap may push this category close to its limit.',
+                breakdown: [
+                    { label: 'Streaming', amount: 14000 },
+                    { label: 'Music', amount: 2900 },
+                    { label: 'Other', amount: 2100 }
+                ],
+                transactions: [
+                    { merchant: 'Netflix', meta: 'Streaming · GTBank', amount: '-₦4,200' },
+                    { merchant: 'Spotify Premium', meta: 'Music · Wema', amount: '-₦2,900' }
+                ]
+            }
+        ];
+
+        const subscriptions = [
+            {
+                id: 'netflix',
+                name: 'Netflix',
+                amount: '₦4,200',
+                cycle: 'Monthly',
+                status: 'active',
+                bank: 'GTBank',
+                lastCharge: 'Apr 28',
+                nextCharge: 'May 28',
+                cancelPath: 'Cancel from GTBank recurring payments',
+                note: 'Review alongside DStv to reduce overlapping entertainment spend.'
+            },
+            {
+                id: 'spotify',
+                name: 'Spotify Premium',
+                amount: '₦2,900',
+                cycle: 'Monthly',
+                status: 'active',
+                bank: 'Wema',
+                lastCharge: 'May 4',
+                nextCharge: 'Jun 4',
+                cancelPath: 'Cancel from Apple App Store subscriptions',
+                note: 'Low-cost subscription; keep if usage remains frequent.'
+            },
+            {
+                id: 'showmax',
+                name: 'Showmax',
+                amount: '₦3,200',
+                cycle: 'Monthly',
+                status: 'inactive',
+                bank: 'Kuda',
+                lastCharge: 'Mar 10',
+                nextCharge: 'No active billing',
+                cancelPath: 'Already cancelled',
+                note: 'No current action needed.'
+            },
+            {
+                id: 'icloud',
+                name: 'iCloud+',
+                amount: '₦1,500',
+                cycle: 'Monthly',
+                status: 'inactive',
+                bank: 'GTBank',
+                lastCharge: 'Feb 18',
+                nextCharge: 'Expired',
+                cancelPath: 'Expired subscription',
+                note: 'Inactive storage plan detected.'
+            }
+        ];
+
+        const personaTraits = {
+            savings: {
+                label: 'Savings discipline',
+                score: 82,
+                reason: 'You save consistently after salary day.',
+                evidence: 'Salary inflow and savings transfers are stable across the month.',
+                recommendation: 'Keep ₦50,000 automated into Wema Fixed Savings.'
+            },
+            control: {
+                label: 'Spending control',
+                score: 54,
+                reason: 'Convenience and transport spending are creeping up.',
+                evidence: 'Bolt usage is higher than your normal monthly pattern.',
+                recommendation: 'Save ₦40,000 monthly toward a car fund with Wema Target Savings.'
+            },
+            bills: {
+                label: 'Bill punctuality',
+                score: 71,
+                reason: 'Recurring bills are usually paid on time.',
+                evidence: 'Netflix and Spotify payments cleared without failed attempts.',
+                recommendation: 'Keep bill reminders active before each renewal date.'
+            },
+            subscriptions: {
+                label: 'Sub efficiency',
+                score: 38,
+                reason: 'Entertainment subscriptions overlap.',
+                evidence: 'Netflix and DStv usage patterns suggest duplicate value.',
+                recommendation: 'Cancel one overlapping service to save up to ₦117,600 yearly.'
+            }
+        };
+
+        const bankActivity = {
+            all: banks.all.activity,
+            wema: banks.wema.activity,
+            gtbank: banks.gtbank.activity,
+            kuda: banks.kuda.activity
+        };
+
+        const bankSpendBars = {
+            all: 60,
+            wema: 35,
+            gtbank: 78,
+            kuda: 65
+        };
+
+        const budgetColors = ['#00843D', '#F59E0B', '#1A5FAB', '#C0392B'];
+
         let current = 's-splash';
+        let selectedBank = 'all';
+        let selectedBudgetCategory = 'food';
+
+        function compactCurrency(value) {
+            const amount = Number(value.replace(/[^\d]/g, ''));
+            if (!amount) return value;
+            return `₦${Math.round(amount / 1000)}k`;
+        }
+
+        function setText(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        }
+
+        function formatNaira(amount) {
+            return `₦${amount.toLocaleString()}`;
+        }
+
+        function selectBank(bankId, el) {
+            const bank = banks[bankId];
+            if (!bank) return;
+
+            selectedBank = bankId;
+
+            document.querySelectorAll('.bank-chip').forEach(chip => {
+                chip.classList.remove('active');
+            });
+
+            const activeChip = el || document.querySelector(`.bank-chip[onclick*="'${bankId}'"]`);
+            if (activeChip) activeChip.classList.add('active');
+
+            setText('balance-label', bankId === 'all' ? 'Total balance (all accounts)' : `${bank.label} balance`);
+            setText('balance-amount', bank.balance);
+            setText('balance-subtitle', bank.subtitle);
+            setText('balance-income', bank.income);
+            setText('balance-spent', bank.spent);
+            setText('balance-saved', bank.saved);
+            setText('overview-spent', compactCurrency(bank.spent));
+            setText('bank-activity-title', `${bank.label} activity`);
+
+            const spentBar = document.getElementById('overview-spent-bar');
+            if (spentBar) spentBar.style.width = `${bankSpendBars[bankId]}%`;
+
+            const activityList = document.getElementById('bank-activity-list');
+            if (activityList) {
+                activityList.innerHTML = bankActivity[bankId].map(item => `
+                    <div class="bank-activity-item">
+                        <span class="bank-activity-dot"></span>
+                        <span>${item}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleRiskInsight() {
+            const card = document.getElementById('budget-risk-card');
+            if (!card) return;
+            const isExpanded = card.classList.toggle('expanded');
+            card.setAttribute('aria-expanded', String(isExpanded));
+        }
+
+        function setRecommendationState(event) {
+            event.stopPropagation();
+            const status = document.getElementById('recommendation-status');
+            if (status) status.classList.add('visible');
+        }
+
+        function toggleRecommendationCalc(event) {
+            event.stopPropagation();
+            const detail = document.getElementById('recommendation-detail');
+            if (detail) detail.classList.toggle('visible');
+        }
+
+        function getBudgetCategory(categoryId) {
+            return budgetCategories.find(category => category.id === categoryId) || budgetCategories[0];
+        }
+
+        function renderBudgetSummary() {
+            const used = budgetCategories.reduce((sum, category) => sum + category.spent, 0);
+            const limit = budgetCategories.reduce((sum, category) => sum + category.limit, 0);
+            const percentage = Math.min(Math.round((used / limit) * 100), 100);
+            const riskCategory = budgetCategories.find(category => category.percentage >= 80);
+
+            setText('budget-total-used', `${formatNaira(used)} / ${formatNaira(limit)}`);
+            setText('budget-summary-status', riskCategory ? `${riskCategory.name.split(' ')[0]} at risk` : 'On track');
+            setText(
+                'budget-summary-note',
+                riskCategory
+                    ? `${riskCategory.name} is the pressure point. Tap a category to inspect the spending drivers.`
+                    : 'All tracked categories are currently inside budget.'
+            );
+
+            const progress = document.getElementById('budget-total-progress');
+            if (progress) progress.style.width = `${percentage}%`;
+        }
+
+        function renderBudgetCategories() {
+            const list = document.getElementById('budget-category-list');
+            if (!list) return;
+
+            list.innerHTML = budgetCategories.map(category => `
+                <div class="sub-row budget-category-row ${category.id === selectedBudgetCategory ? 'active' : ''}"
+                    onclick="selectBudgetCategory('${category.id}')">
+                    <div class="sub-info">
+                        <div class="sub-name">${category.name}</div>
+                        <div class="sub-meta">${formatNaira(category.spent)} / ${formatNaira(category.limit)} used · ${category.status}</div>
+                    </div>
+                    <div class="sub-amt">${category.percentage}%</div>
+                </div>
+            `).join('');
+        }
+
+        function renderBudgetDetail() {
+            const category = getBudgetCategory(selectedBudgetCategory);
+            const totalBreakdown = category.breakdown.reduce((sum, item) => sum + item.amount, 0);
+            const segments = category.breakdown.map((item, index) => {
+                const width = Math.max((item.amount / totalBreakdown) * 100, 8);
+                return `<div class="budget-chart-segment" style="width:${width}%;background:${budgetColors[index % budgetColors.length]};"></div>`;
+            }).join('');
+
+            setText('budget-chart-title', `${category.name} split`);
+            setText('budget-chart-subtitle', `${formatNaira(category.spent)} spent from ${formatNaira(category.limit)}`);
+            setText('budget-chart-value', `${category.percentage}%`);
+            setText('budget-detail-title', category.name);
+            setText('budget-detail-meta', category.projection);
+
+            const chart = document.getElementById('budget-chart-track');
+            if (chart) chart.innerHTML = segments;
+
+            const breakdown = document.getElementById('budget-breakdown-list');
+            if (breakdown) {
+                breakdown.innerHTML = category.breakdown.map((item, index) => `
+                    <div class="budget-breakdown-row">
+                        <div class="budget-breakdown-label">
+                            <span class="budget-color-dot" style="background:${budgetColors[index % budgetColors.length]};"></span>
+                            <span>${item.label}</span>
+                        </div>
+                        <strong>${formatNaira(item.amount)}</strong>
+                    </div>
+                `).join('');
+            }
+
+            const transactions = document.getElementById('budget-transaction-list');
+            if (transactions) {
+                transactions.innerHTML = category.transactions.map(transaction => `
+                    <div class="bank-activity-item">
+                        <span class="bank-activity-dot"></span>
+                        <span><strong>${transaction.merchant}</strong><br>${transaction.meta} · ${transaction.amount}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function selectBudgetCategory(categoryId) {
+            selectedBudgetCategory = categoryId;
+            const editor = document.getElementById('budget-preset-row');
+            if (editor) editor.classList.remove('visible');
+            renderBudgetCategories();
+            renderBudgetDetail();
+        }
+
+        function toggleBudgetEditor() {
+            const editor = document.getElementById('budget-preset-row');
+            if (editor) editor.classList.toggle('visible');
+        }
+
+        function setBudgetLimit(limit) {
+            const category = getBudgetCategory(selectedBudgetCategory);
+            category.limit = limit;
+            category.percentage = Math.min(Math.round((category.spent / category.limit) * 100), 100);
+            category.status = category.percentage >= 85 ? 'At risk' : category.percentage >= 70 ? 'Watch' : 'Healthy';
+
+            if (category.spent > category.limit) {
+                category.projection = `Already ${formatNaira(category.spent - category.limit)} over the new budget.`;
+            } else {
+                category.projection = `${formatNaira(category.limit - category.spent)} left before this category reaches its limit.`;
+            }
+
+            renderBudgetSummary();
+            renderBudgetCategories();
+            renderBudgetDetail();
+        }
+
         function go(id) {
             const prev = document.getElementById(current);
             const next = document.getElementById(id);
@@ -1869,6 +2709,23 @@
             });
             setTimeout(() => go('s-dashboard'), 3200);
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            selectBank(selectedBank);
+            renderBudgetSummary();
+            renderBudgetCategories();
+            renderBudgetDetail();
+
+            const riskCard = document.getElementById('budget-risk-card');
+            if (riskCard) {
+                riskCard.addEventListener('keydown', event => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        toggleRiskInsight();
+                    }
+                });
+            }
+        });
     </script>
 </body>
 
